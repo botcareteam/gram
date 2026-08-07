@@ -1,0 +1,3110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>GRAM AIRDROO</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+<style>
+
+:root{
+--bg:#05070d;
+--card:rgba(255,255,255,.055);
+--border:rgba(255,255,255,.10);
+--blue:#168cff;
+--cyan:#00e5ff;
+--green:#27e58c;
+--red:#ff6262;
+--yellow:#ffc857;
+--muted:#8c96a8;
+}
+
+*{
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+margin:0;
+min-height:100vh;
+
+background:
+radial-gradient(
+circle at 50% -10%,
+rgba(0,229,255,.18),
+transparent 35%
+),
+var(--bg);
+
+color:white;
+font-family:Inter,Arial,sans-serif;
+}
+
+button{
+font-family:inherit;
+cursor:pointer;
+}
+
+button:disabled{
+opacity:.55;
+cursor:not-allowed;
+}
+
+.app{
+width:100%;
+max-width:520px;
+margin:auto;
+padding-bottom:30px;
+}
+
+.page{
+display:none;
+}
+
+.page.active{
+display:block;
+animation:pageIn .3s ease;
+}
+
+@keyframes pageIn{
+from{
+opacity:0;
+transform:translateY(8px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+
+/* ================= LOADER ================= */
+
+#loader{
+position:fixed;
+inset:0;
+z-index:99999;
+
+background:#05070d;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+}
+
+.loader-logo{
+width:82px;
+height:82px;
+
+border-radius:26px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:38px;
+font-weight:900;
+
+background:
+linear-gradient(
+135deg,
+#007aff,
+#00e5ff
+);
+
+box-shadow:
+0 0 45px
+rgba(0,229,255,.35);
+
+animation:pulse 1.6s infinite;
+}
+
+@keyframes pulse{
+0%,100%{
+transform:scale(1);
+}
+50%{
+transform:scale(1.06);
+}
+}
+
+.loader-title{
+margin-top:22px;
+font-size:18px;
+font-weight:900;
+letter-spacing:2px;
+}
+
+.loader-status{
+margin-top:8px;
+color:var(--muted);
+font-size:12px;
+}
+
+.loader-bar{
+width:190px;
+height:4px;
+
+margin-top:25px;
+
+background:#18202d;
+
+border-radius:10px;
+
+overflow:hidden;
+}
+
+.loader-bar span{
+display:block;
+
+width:0;
+height:100%;
+
+background:
+linear-gradient(
+90deg,
+var(--blue),
+var(--cyan)
+);
+
+animation:loading 2.2s forwards;
+}
+
+@keyframes loading{
+to{
+width:100%;
+}
+}
+
+
+/* ================= WELCOME ================= */
+
+#welcomePopup{
+position:fixed;
+inset:0;
+
+z-index:9998;
+
+display:none;
+
+align-items:center;
+justify-content:center;
+
+padding:25px;
+
+background:rgba(0,0,0,.84);
+
+backdrop-filter:blur(9px);
+}
+
+.welcome-card{
+width:100%;
+max-width:380px;
+
+padding:30px 22px;
+
+text-align:center;
+
+border-radius:28px;
+
+background:
+linear-gradient(
+145deg,
+rgba(0,122,255,.18),
+rgba(0,229,255,.05)
+),
+#0b1018;
+
+border:
+1px solid
+rgba(0,229,255,.18);
+
+box-shadow:
+0 25px 80px
+rgba(0,0,0,.5);
+
+animation:popup .35s ease;
+}
+
+@keyframes popup{
+from{
+opacity:0;
+transform:scale(.9);
+}
+
+to{
+opacity:1;
+transform:scale(1);
+}
+}
+
+.gift-big{
+font-size:75px;
+animation:giftFloat 1.6s infinite;
+}
+
+@keyframes giftFloat{
+50%{
+transform:translateY(-7px);
+}
+}
+
+.welcome-card h1{
+margin:15px 0 8px;
+font-size:26px;
+}
+
+.welcome-card p{
+color:var(--muted);
+font-size:13px;
+line-height:1.6;
+}
+
+
+/* ================= HEADER ================= */
+
+.header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+padding:18px;
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.brand-icon{
+width:42px;
+height:42px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:13px;
+
+font-weight:900;
+
+background:
+linear-gradient(
+135deg,
+#007aff,
+#00e5ff
+);
+}
+
+.brand-name{
+font-size:16px;
+font-weight:900;
+}
+
+.brand-sub{
+color:var(--muted);
+font-size:10px;
+margin-top:3px;
+}
+
+.user-icon{
+width:42px;
+height:42px;
+
+border-radius:50%;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:#111925;
+
+border:
+1px solid
+var(--border);
+
+color:#42a5ff;
+}
+
+
+/* ================= WALLET ================= */
+
+.wallet{
+margin:8px 16px;
+
+padding:21px;
+
+border-radius:25px;
+
+background:
+linear-gradient(
+145deg,
+rgba(0,122,255,.18),
+rgba(0,229,255,.04)
+),
+var(--card);
+
+border:
+1px solid
+rgba(0,229,255,.15);
+}
+
+.wallet-title{
+display:flex;
+align-items:center;
+gap:8px;
+
+color:var(--muted);
+
+font-size:12px;
+font-weight:700;
+}
+
+.wallet-title i{
+color:var(--cyan);
+}
+
+.balance{
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+margin-top:18px;
+
+padding:15px;
+
+border-radius:17px;
+
+background:
+rgba(0,0,0,.18);
+}
+
+.balance-left{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.token-icon{
+width:42px;
+height:42px;
+
+border-radius:14px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-weight:900;
+}
+
+.usdt-icon{
+background:#123d38;
+color:#27e5a0;
+}
+
+.gram-icon{
+background:#102f45;
+color:#38a8ff;
+}
+
+.token-name{
+font-size:14px;
+font-weight:900;
+}
+
+.token-sub{
+color:var(--muted);
+font-size:10px;
+margin-top:3px;
+}
+
+.amount{
+font-size:20px;
+font-weight:900;
+}
+
+
+/* ================= CARD ================= */
+
+.card{
+margin:14px 16px;
+
+padding:18px;
+
+border-radius:22px;
+
+background:var(--card);
+
+border:
+1px solid
+var(--border);
+
+backdrop-filter:blur(15px);
+}
+
+.card-title{
+font-size:15px;
+font-weight:900;
+
+margin-bottom:14px;
+}
+
+
+/* ================= ACTIONS ================= */
+
+.action-grid{
+display:grid;
+
+grid-template-columns:
+1fr 1fr;
+
+gap:10px;
+}
+
+.action-button{
+width:100%;
+
+min-height:78px;
+
+border:0;
+
+border-radius:18px;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+gap:7px;
+
+font-size:12px;
+
+font-weight:900;
+}
+
+.action-button i{
+font-size:20px;
+}
+
+.withdraw-action{
+color:#001018;
+
+background:
+linear-gradient(
+135deg,
+#168cff,
+#00e5ff
+);
+}
+
+.deposit-action{
+color:white;
+
+background:#151d29;
+
+border:
+1px solid
+var(--border);
+}
+
+.action-note{
+margin-top:10px;
+
+text-align:center;
+
+color:#667184;
+
+font-size:9px;
+
+line-height:1.5;
+}
+
+
+/* ================= TASK ================= */
+
+.task{
+display:flex;
+align-items:center;
+
+gap:13px;
+
+padding:15px;
+
+margin-top:10px;
+
+border-radius:17px;
+
+background:#0c121b;
+
+border:
+1px solid
+rgba(255,255,255,.07);
+}
+
+.task-icon{
+width:45px;
+height:45px;
+
+flex-shrink:0;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:14px;
+
+font-size:20px;
+}
+
+.task-gift{
+background:#38291a;
+color:#ffc857;
+}
+
+.task-info{
+flex:1;
+}
+
+.task-name{
+font-size:13px;
+font-weight:900;
+}
+
+.task-desc{
+color:var(--muted);
+
+font-size:10px;
+
+margin-top:4px;
+}
+
+.task-reward{
+color:var(--green);
+
+font-size:11px;
+
+font-weight:900;
+
+margin-top:4px;
+}
+
+.task-btn{
+border:0;
+
+padding:9px 13px;
+
+border-radius:11px;
+
+background:
+linear-gradient(
+100deg,
+#168cff,
+#00e5ff
+);
+
+color:#001018;
+
+font-size:10px;
+
+font-weight:900;
+}
+
+.task-btn.done{
+background:#18231f;
+color:var(--green);
+}
+
+
+/* ================= AIRDROP MESSAGE ================= */
+
+.airdrop-message{
+margin:14px 16px;
+
+padding:18px;
+
+border-radius:20px;
+
+background:
+linear-gradient(
+135deg,
+rgba(22,140,255,.10),
+rgba(0,229,255,.05)
+);
+
+border:
+1px solid
+rgba(0,229,255,.12);
+
+text-align:center;
+}
+
+.airdrop-message h3{
+margin:0 0 8px;
+
+font-size:14px;
+font-weight:900;
+}
+
+.airdrop-message p{
+margin:0;
+
+color:#8c96a8;
+
+font-size:10px;
+
+line-height:1.7;
+}
+
+
+/* ================= BUTTON ================= */
+
+.btn{
+width:100%;
+
+border:0;
+
+border-radius:15px;
+
+padding:15px;
+
+margin-top:10px;
+
+font-size:14px;
+
+font-weight:900;
+}
+
+.btn-primary{
+color:#001018;
+
+background:
+linear-gradient(
+100deg,
+#168cff,
+#00e5ff
+);
+}
+
+.btn-secondary{
+color:white;
+
+background:#151c27;
+
+border:
+1px solid
+var(--border);
+}
+
+
+/* ================= BACK ================= */
+
+.back{
+margin:18px 16px 5px;
+
+display:flex;
+align-items:center;
+
+gap:9px;
+
+color:#aab4c4;
+
+font-size:13px;
+
+font-weight:800;
+
+cursor:pointer;
+}
+
+
+/* ================= NETWORK ================= */
+
+.network{
+display:flex;
+
+align-items:center;
+justify-content:space-between;
+
+padding:12px;
+
+background:#0c131d;
+
+border-radius:14px;
+}
+
+.network-left{
+display:flex;
+align-items:center;
+
+gap:10px;
+}
+
+.ton-logo{
+width:38px;
+height:38px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:12px;
+
+background:#229ed9;
+
+font-weight:900;
+}
+
+.network-name{
+font-size:13px;
+font-weight:900;
+}
+
+.network-type{
+color:var(--muted);
+
+font-size:10px;
+
+margin-top:3px;
+}
+
+
+/* ================= ADDRESS ================= */
+
+.address{
+margin-top:14px;
+
+padding:13px;
+
+border-radius:14px;
+
+background:#080c12;
+
+border:
+1px solid
+var(--border);
+
+word-break:break-all;
+
+font-size:11px;
+
+color:#cbd3df;
+}
+
+.copy{
+width:100%;
+
+margin-top:8px;
+
+padding:12px;
+
+border:0;
+
+border-radius:12px;
+
+background:#182433;
+
+color:white;
+
+font-weight:800;
+}
+
+
+/* ================= MEMO ================= */
+
+.memo{
+margin-top:14px;
+
+padding:16px;
+
+text-align:center;
+
+border-radius:15px;
+
+background:
+rgba(0,229,255,.05);
+
+border:
+1px solid
+rgba(0,229,255,.12);
+}
+
+.memo-label{
+color:var(--muted);
+
+font-size:10px;
+}
+
+.memo-value{
+margin-top:7px;
+
+color:var(--cyan);
+
+font-size:20px;
+
+font-weight:900;
+
+letter-spacing:2px;
+}
+
+
+/* ================= INPUT ================= */
+
+.input{
+width:100%;
+
+padding:14px;
+
+margin-top:9px;
+
+border-radius:13px;
+
+border:
+1px solid
+var(--border);
+
+outline:none;
+
+background:#090e15;
+
+color:white;
+
+font-size:13px;
+}
+
+.input:focus{
+border-color:var(--blue);
+}
+
+.label{
+display:block;
+
+margin-top:14px;
+
+color:var(--muted);
+
+font-size:11px;
+}
+
+
+/* ================= TOKEN SELECT ================= */
+
+.token-selector{
+display:grid;
+
+grid-template-columns:
+1fr 1fr;
+
+gap:10px;
+
+margin-top:10px;
+}
+
+.token-option{
+border:
+1px solid
+var(--border);
+
+background:#0b1119;
+
+color:white;
+
+border-radius:15px;
+
+padding:13px;
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+font-weight:900;
+
+text-align:left;
+}
+
+.token-option.active{
+border-color:var(--cyan);
+
+background:
+rgba(0,229,255,.08);
+
+box-shadow:
+0 0 0 1px
+rgba(0,229,255,.15);
+}
+
+.mini{
+width:34px;
+height:34px;
+
+border-radius:11px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-weight:900;
+}
+
+.mini-usdt{
+background:#123d38;
+color:#27e5a0;
+}
+
+.mini-gram{
+background:#102f45;
+color:#38a8ff;
+}
+
+.selected-balance{
+margin-top:12px;
+
+padding:12px 14px;
+
+border-radius:14px;
+
+background:#0b121b;
+
+color:#aeb8c8;
+
+font-size:11px;
+}
+
+.selected-balance strong{
+color:white;
+}
+
+
+/* ================= RULES ================= */
+
+.rules{
+margin-top:12px;
+
+padding:14px;
+
+border-radius:15px;
+
+background:
+rgba(255,255,255,.035);
+
+border:
+1px solid
+rgba(255,255,255,.07);
+
+font-size:10px;
+
+color:#9fa9ba;
+
+line-height:1.65;
+}
+
+.rules-title{
+color:#fff;
+
+font-weight:900;
+
+font-size:11px;
+
+margin-bottom:6px;
+}
+
+.rules strong{
+color:var(--yellow);
+}
+
+
+/* ================= INFO ================= */
+
+.info{
+margin-top:15px;
+
+padding:14px;
+
+border-radius:15px;
+
+background:
+rgba(255,200,87,.05);
+
+border:
+1px solid
+rgba(255,200,87,.12);
+
+color:#aeb8c8;
+
+font-size:11px;
+
+line-height:1.6;
+}
+
+.info strong{
+color:var(--yellow);
+}
+
+
+/* ================= ERROR ================= */
+
+.error-box{
+display:none;
+
+margin-top:14px;
+
+padding:14px;
+
+border-radius:15px;
+
+background:
+rgba(255,98,98,.07);
+
+border:
+1px solid
+rgba(255,98,98,.20);
+
+color:#ff8585;
+
+font-size:12px;
+
+line-height:1.5;
+
+font-weight:700;
+}
+
+
+/* ================= ALERT ================= */
+
+#alertBox{
+position:fixed;
+
+left:16px;
+right:16px;
+
+bottom:20px;
+
+z-index:100000;
+
+display:none;
+
+padding:15px 17px;
+
+border-radius:15px;
+
+background:#121923;
+
+border:
+1px solid
+var(--border);
+
+box-shadow:
+0 15px 50px
+rgba(0,0,0,.5);
+
+font-size:12px;
+
+font-weight:700;
+
+animation:alertIn .25s ease;
+}
+
+@keyframes alertIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+
+/* ================= MODAL ================= */
+
+.modal-overlay{
+position:fixed;
+
+inset:0;
+
+z-index:99999;
+
+background:
+rgba(0,0,0,.86);
+
+backdrop-filter:blur(8px);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:20px;
+}
+
+.modal-card{
+width:100%;
+
+max-width:390px;
+
+background:#0c121b;
+
+border:
+1px solid
+rgba(0,229,255,.18);
+
+border-radius:25px;
+
+padding:25px;
+
+text-align:center;
+
+box-shadow:
+0 25px 80px
+rgba(0,0,0,.6);
+
+animation:popup .3s ease;
+}
+
+.modal-icon{
+font-size:55px;
+margin-bottom:10px;
+}
+
+.modal-card h2{
+margin:0 0 10px;
+font-size:21px;
+}
+
+.modal-card p{
+color:var(--muted);
+
+font-size:12px;
+
+line-height:1.6;
+}
+
+.reward-number{
+margin:20px 0;
+
+font-size:42px;
+
+font-weight:900;
+
+color:var(--green);
+}
+
+
+/* ================= FOOTER ================= */
+
+.footer{
+text-align:center;
+
+padding:20px;
+
+color:#596273;
+
+font-size:10px;
+}
+
+.demo-label{
+display:inline-block;
+
+margin-top:7px;
+
+padding:4px 9px;
+
+border-radius:8px;
+
+background:#1b2029;
+
+color:#778195;
+
+font-size:9px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= LOADER ================= -->
+
+<div id="loader">
+
+<div class="loader-logo">
+G
+</div>
+
+<div class="loader-title">
+GRAM AIRDROP
+</div>
+
+<div class="loader-status"
+id="loaderStatus">
+Initializing...
+</div>
+
+<div class="loader-bar">
+<span></span>
+</div>
+
+</div>
+
+
+<!-- ================= WELCOME ================= -->
+
+<div id="welcomePopup">
+
+<div class="welcome-card">
+
+<div class="gift-big">
+🎁
+</div>
+
+<h1>
+Claim Free USDT
+</h1>
+
+<p>
+Your welcome reward is waiting.
+Open the free gift box from the Tasks
+section to receive your reward.
+</p>
+
+<button
+class="btn btn-primary"
+onclick="goToTasks()">
+
+🎁 CLAIM FREE USDT
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= ALERT ================= -->
+
+<div id="alertBox"></div>
+
+
+<div class="app">
+
+
+<!-- ================================================= -->
+<!-- HOME -->
+<!-- ================================================= -->
+
+<section
+id="home"
+class="page active">
+
+
+<header class="header">
+
+<div class="brand">
+
+<div class="brand-icon">
+G
+</div>
+
+<div>
+
+<div class="brand-name">
+GRAM AIRDROP
+</div>
+
+<div class="brand-sub">
+TON Network
+</div>
+
+</div>
+
+</div>
+
+<div class="user-icon">
+
+<i class="fab fa-telegram-plane"></i>
+
+</div>
+
+</header>
+
+
+<!-- ================= WALLET ================= -->
+
+<div class="wallet">
+
+<div class="wallet-title">
+
+<i class="fa-solid fa-wallet"></i>
+
+My Wallet
+
+</div>
+
+
+<!-- USDT -->
+
+<div class="balance">
+
+<div class="balance-left">
+
+<div class="token-icon usdt-icon">
+$
+</div>
+
+<div>
+
+<div class="token-name">
+$USDT
+</div>
+
+<div class="token-sub">
+USDT Balance
+</div>
+
+</div>
+
+</div>
+
+<div
+class="amount"
+id="usdtBalance">
+
+0.00
+
+</div>
+
+</div>
+
+
+<!-- GRAM -->
+
+<div class="balance">
+
+<div class="balance-left">
+
+<div class="token-icon gram-icon">
+G
+</div>
+
+<div>
+
+<div class="token-name">
+$GRAM
+</div>
+
+<div class="token-sub">
+GRAM Balance
+</div>
+
+</div>
+
+</div>
+
+<div
+class="amount"
+id="gramBalance">
+
+0.00
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= WALLET ACTIONS ================= -->
+
+<div class="card">
+
+<div class="card-title">
+Wallet
+</div>
+
+<div class="action-grid">
+
+<button
+class="action-button withdraw-action"
+onclick="showPage('withdraw')">
+
+<i class="fa-solid fa-arrow-up"></i>
+
+Withdraw
+
+</button>
+
+
+<button
+class="action-button deposit-action"
+onclick="showPage('deposit')">
+
+<i class="fa-solid fa-arrow-down"></i>
+
+Deposit
+
+</button>
+
+</div>
+
+<div class="action-note">
+
+Secure wallet management for your
+airdrop rewards.
+
+</div>
+
+</div>
+
+
+<!-- ================= TASKS ================= -->
+
+<div class="card">
+
+<div class="card-title">
+
+<i class="fa-solid fa-list-check"></i>
+
+Tasks
+
+</div>
+
+
+<div class="task">
+
+<div class="task-icon task-gift">
+🎁
+</div>
+
+<div class="task-info">
+
+<div class="task-name">
+Free Gift Box
+</div>
+
+<div class="task-desc">
+One-time welcome reward
+</div>
+
+<div class="task-reward">
+1.00–100.00 USDT
+</div>
+
+</div>
+
+
+<button
+id="giftTaskBtn"
+class="task-btn"
+onclick="openGiftTask()">
+
+OPEN
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= AIRDROP MESSAGE ================= -->
+
+<div class="airdrop-message">
+
+<h3>
+🚀 Welcome to GRAM Airdrop
+</h3>
+
+<p>
+
+Explore the GRAM Airdrop dashboard,
+complete available tasks and collect
+your rewards. Your wallet balance is
+saved automatically on this device.
+
+</p>
+
+</div>
+
+
+<div class="footer">
+
+GRAM OFFICIAL AIRDROP
+
+<br>
+
+<span class="demo-label">
+
+GRAM AIRDROP • TELEGRAM<br>
+TONKEEPER x $GRAM
+
+</span>
+
+</div>
+
+</section>
+
+
+
+<!-- ================================================= -->
+<!-- DEPOSIT -->
+<!-- ================================================= -->
+
+<section
+id="deposit"
+class="page">
+
+
+<div
+class="back"
+onclick="showPage('home')">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+Back to Wallet
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">
+
+Deposit & Verify<br>
+<p><small><em><u>deposit At Last 1 $GRAM</u></em></small></p>
+
+</div>
+
+
+<div class="network">
+
+<div class="network-left">
+
+<div class="ton-logo">
+T
+</div>
+
+<div>
+
+<div class="network-name">
+TON Network
+</div>
+
+<div class="network-type">
+GRAM Token
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="address"
+id="depositAddress">
+
+UQCgDd9IQXJIyu1QLZ1VTdrXSF_1ey5iI0lNkWV7Qs8nnQQN
+
+</div>
+
+
+<button
+class="copy"
+onclick="copyAddress()">
+
+<i class="fa-regular fa-copy"></i>
+
+Copy Address
+
+</button>
+
+
+<div class="memo">
+
+<div class="memo-label">
+
+YOUR UNIQUE MEMO
+
+</div>
+
+<div
+class="memo-value"
+id="memoText">
+
+---
+
+</div>
+
+<button
+class="copy"
+onclick="copyMemo()">
+
+Copy Memo
+
+</button>
+
+</div>
+
+
+<div class="rules">
+
+<div class="rules-title">
+Deposit Rules
+</div>
+
+• Use the correct <strong>TON Network</strong>.<br>
+
+• Send only the supported token to the
+displayed address.<br>
+
+• Use your unique <strong>MEMO</strong>
+when required.<br>
+
+• Always verify the address before sending.<br>
+
+• This detect real blockchain deposits.
+
+</div>
+
+
+<div class="info">
+
+<strong>
+Deposit Verification
+</strong>
+
+<br>
+
+This is a real Real blockchain
+deposit detection and confirmation are
+performed by this page.
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================================================= -->
+<!-- WITHDRAW -->
+<!-- ================================================= -->
+
+<section
+id="withdraw"
+class="page">
+
+
+<div
+class="back"
+onclick="showPage('home')">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+Back to Wallet
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">
+Withdraw
+</div>
+
+
+<div class="network">
+
+<div class="network-left">
+
+<div class="ton-logo">
+T
+</div>
+
+<div>
+
+<div class="network-name">
+TON Network
+</div>
+
+<div class="network-type">
+USDT / GRAM
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SELECT TOKEN -->
+
+<label class="label">
+Select Token
+</label>
+
+
+<div class="token-selector">
+
+
+<button
+id="tokenUSDT"
+class="token-option active"
+onclick="selectToken('USDT')">
+
+<span class="mini mini-usdt">
+$
+</span>
+
+<span>
+$USDT
+</span>
+
+</button>
+
+
+<button
+id="tokenGRAM"
+class="token-option"
+onclick="selectToken('GRAM')">
+
+<span class="mini mini-gram">
+G
+</span>
+
+<span>
+$GRAM
+</span>
+
+</button>
+
+
+</div>
+
+
+<!-- BALANCE -->
+
+<div class="selected-balance">
+
+Available Balance:
+
+<strong id="selectedBalance">
+0.00 USDT
+</strong>
+
+</div>
+
+
+<!-- ADDRESS -->
+
+<label class="label">
+Wallet Address
+</label>
+
+<input
+id="withdrawAddress"
+class="input"
+type="text"
+placeholder="Enter your TON wallet address">
+
+
+<!-- AMOUNT -->
+
+<label class="label">
+Amount
+</label>
+
+<input
+id="withdrawAmount"
+class="input"
+type="number"
+min="0.01"
+step="0.01"
+placeholder="Enter amount">
+
+
+<!-- ERROR -->
+
+<div
+id="withdrawError"
+class="error-box">
+</div>
+
+
+<!-- CONFIRM -->
+
+<button
+class="btn btn-primary"
+onclick="withdraw()">
+
+<i class="fa-solid fa-paper-plane"></i>
+
+Confirm Withdrawal
+
+</button>
+
+
+<!-- CANCEL -->
+
+<button
+class="btn btn-secondary"
+onclick="showPage('home')">
+
+Cancel
+
+</button>
+
+
+<!-- WITHDRAWAL REQUIREMENTS -->
+
+<div class="rules">
+
+<div class="rules-title">
+
+Withdrawal Requirements
+
+</div>
+
+• Select the token you want to withdraw.<br>
+
+• Your selected token must have sufficient
+<strong>balance</strong>.<br>
+
+• For GRAM withdrawals, you need at least
+<strong>1 GRAM</strong> in your wallet.<br>
+
+• Enter a valid TON wallet address.<br>
+
+• Enter an amount within your available balance.<br>
+
+• Withdrawal requests are subject to verification.
+
+</div>
+
+
+<div class="info">
+
+<strong>
+Important
+</strong>
+
+<br>
+
+You need at least <strong>1 GRAM</strong>
+in your wallet to make a GRAM withdrawal.
+If your GRAM balance is below 1 GRAM,
+thbelow 1 GRAM,
+withdrawal is unavailable.
+
+</div></div></div></section><!-- ================================================= --><!-- GIFT MODAL --><!-- ================================================= --><div
+id="giftModal"
+class="modal-overlay"
+style="display:none;"><div class="modal-card"><div class="modal-icon">
+🎁
+</div><h2>
+Your Free Gift
+</h2><p>
+Congratulations! You have unlocked
+your one-time welcome reward.
+</p><div
+class="reward-number"
+id="rewardNumber">0.00 USDT
+
+</div><p>
+This reward can only be claimed once
+on this device.
+</p><button
+id="claimGiftBtn"
+class="btn btn-primary"
+onclick="claimGift()">
+
+🎁 CLAIM REWARD
+
+</button><button
+class="btn btn-secondary"
+onclick="closeGiftModal()">
+
+Close
+
+</button></div></div></div><script>
+
+/* ================================================= */
+/* TELEGRAM */
+/* ================================================= */
+
+const tg =
+window.Telegram &&
+window.Telegram.WebApp
+? window.Telegram.WebApp
+: null;
+
+if(tg){
+
+try{
+
+tg.ready();
+tg.expand();
+
+}catch(e){}
+
+}
+
+
+/* ================================================= */
+/* STORAGE */
+/* ================================================= */
+
+const STORAGE_KEY = "gram_airdrop_demo_v1";
+
+
+function getDefaultData(){
+
+return{
+
+usdt:0,
+gram:0,
+
+giftClaimed:false,
+giftReward:0,
+
+memo:
+"GRAM-" +
+Math.random()
+.toString(36)
+.substring(2,8)
+.toUpperCase()
+
+};
+
+}
+
+
+function loadData(){
+
+try{
+
+const saved =
+localStorage.getItem(STORAGE_KEY);
+
+if(saved){
+
+const data =
+JSON.parse(saved);
+
+return{
+
+...getDefaultData(),
+...data
+
+};
+
+}
+
+}catch(error){
+
+console.log(
+"Storage read error:",
+error
+);
+
+}
+
+return getDefaultData();
+
+}
+
+
+let walletData =
+loadData();
+
+
+function saveData(){
+
+try{
+
+localStorage.setItem(
+STORAGE_KEY,
+JSON.stringify(walletData)
+);
+
+}catch(error){
+
+console.log(
+"Storage save error:",
+error
+);
+
+}
+
+}
+
+
+/* ================================================= */
+/* FORMAT NUMBER */
+/* ================================================= */
+
+function formatNumber(number){
+
+return Number(number || 0)
+.toFixed(2);
+
+}
+
+
+/* ================================================= */
+/* UPDATE WALLET */
+/* ================================================= */
+
+function updateWallet(){
+
+const usdt =
+document.getElementById(
+"usdtBalance"
+);
+
+const gram =
+document.getElementById(
+"gramBalance"
+);
+
+if(usdt){
+
+usdt.textContent =
+formatNumber(
+walletData.usdt
+);
+
+}
+
+if(gram){
+
+gram.textContent =
+formatNumber(
+walletData.gram
+);
+
+}
+
+updateSelectedBalance();
+
+updateGiftButton();
+
+}
+
+
+/* ================================================= */
+/* SELECTED BALANCE */
+/* ================================================= */
+
+let selectedToken = "USDT";
+
+
+function updateSelectedBalance(){
+
+const element =
+document.getElementById(
+"selectedBalance"
+);
+
+if(!element) return;
+
+
+if(selectedToken === "USDT"){
+
+element.textContent =
+formatNumber(
+walletData.usdt
+) + " USDT";
+
+}else{
+
+element.textContent =
+formatNumber(
+walletData.gram
+) + " GRAM";
+
+}
+
+}
+
+
+/* ================================================= */
+/* TOKEN SELECT */
+/* ================================================= */
+
+function selectToken(token){
+
+selectedToken =
+token;
+
+const usdtButton =
+document.getElementById(
+"tokenUSDT"
+);
+
+const gramButton =
+document.getElementById(
+"tokenGRAM"
+);
+
+
+if(usdtButton){
+
+usdtButton.classList.toggle(
+"active",
+token === "USDT"
+);
+
+}
+
+if(gramButton){
+
+gramButton.classList.toggle(
+"active",
+token === "GRAM"
+);
+
+}
+
+
+const amount =
+document.getElementById(
+"withdrawAmount"
+);
+
+if(amount){
+
+amount.value = "";
+
+}
+
+updateSelectedBalance();
+
+}
+
+
+/* ================================================= */
+/* PAGE NAVIGATION */
+/* ================================================= */
+
+function showPage(pageId){
+
+document
+.querySelectorAll(".page")
+.forEach(page => {
+
+page.classList.remove(
+"active"
+);
+
+});
+
+
+const page =
+document.getElementById(
+pageId
+);
+
+if(page){
+
+page.classList.add(
+"active"
+);
+
+}
+
+
+window.scrollTo({
+
+top:0,
+behavior:"smooth"
+
+});
+
+
+if(pageId === "deposit"){
+
+updateMemo();
+
+}
+
+if(pageId === "withdraw"){
+
+updateSelectedBalance();
+
+}
+
+}
+
+
+/* ================================================= */
+/* GO TO TASKS */
+/* ================================================= */
+
+function goToTasks(){
+
+closeWelcome();
+
+showPage("home");
+
+setTimeout(()=>{
+
+const task =
+document.querySelector(
+".task"
+);
+
+if(task){
+
+task.scrollIntoView({
+
+behavior:"smooth",
+block:"center"
+
+});
+
+}
+
+},150);
+
+}
+
+
+/* ================================================= */
+/* WELCOME POPUP */
+/* ================================================= */
+
+function showWelcome(){
+
+const popup =
+document.getElementById(
+"welcomePopup"
+);
+
+if(!popup) return;
+
+if(walletData.giftClaimed){
+
+popup.style.display =
+"none";
+
+return;
+
+}
+
+popup.style.display =
+"flex";
+
+}
+
+
+function closeWelcome(){
+
+const popup =
+document.getElementById(
+"welcomePopup"
+);
+
+if(popup){
+
+popup.style.display =
+"none";
+
+}
+
+}
+
+
+/* ================================================= */
+/* RANDOM REWARD */
+/* 20.00 - 50.00 */
+/* ================================================= */
+
+function generateReward(){
+
+const min = 20;
+const max = 50;
+
+const value =
+Math.random() *
+(max - min) +
+min;
+
+
+/*
+Keep two decimal places.
+Examples:
+20.26
+26.66
+45.62
+33.22
+*/
+
+return Number(
+value.toFixed(2)
+);
+
+}
+
+
+/* ================================================= */
+/* OPEN GIFT */
+/* ================================================= */
+
+function openGiftTask(){
+
+if(walletData.giftClaimed){
+
+showAlert(
+"🎁 This gift has already been claimed."
+);
+
+updateGiftButton();
+
+return;
+
+}
+
+
+const reward =
+generateReward();
+
+walletData.giftReward =
+reward;
+
+saveData();
+
+
+const rewardNumber =
+document.getElementById(
+"rewardNumber"
+);
+
+if(rewardNumber){
+
+rewardNumber.textContent =
+formatNumber(reward) +
+" USDT";
+
+}
+
+
+const modal =
+document.getElementById(
+"giftModal"
+);
+
+if(modal){
+
+modal.style.display =
+"flex";
+
+}
+
+}
+
+
+/* ================================================= */
+/* CLAIM GIFT */
+/* ================================================= */
+
+function claimGift(){
+
+if(walletData.giftClaimed){
+
+showAlert(
+"🎁 Reward already claimed."
+);
+
+closeGiftModal();
+
+return;
+
+}
+
+
+const reward =
+Number(
+walletData.giftReward || 0
+);
+
+
+if(reward <= 0){
+
+showAlert(
+"Unable to create reward. Please try again."
+);
+
+return;
+
+}
+
+
+/*
+Add reward ONLY ONCE.
+The flag is saved immediately.
+*/
+
+walletData.usdt =
+Number(walletData.usdt || 0) +
+reward;
+
+walletData.giftClaimed =
+true;
+
+saveData();
+
+
+updateWallet();
+
+
+const claimButton =
+document.getElementById(
+"claimGiftBtn"
+);
+
+if(claimButton){
+
+claimButton.disabled =
+true;
+
+claimButton.textContent =
+"✓ CLAIMED";
+
+}
+
+
+const giftButton =
+document.getElementById(
+"giftTaskBtn"
+);
+
+if(giftButton){
+
+giftButton.disabled =
+true;
+
+giftButton.classList.add(
+"done"
+);
+
+giftButton.textContent =
+"✓ CLAIMED";
+
+}
+
+
+showAlert(
+"🎉 " +
+formatNumber(reward) +
+" USDT reward added!"
+);
+
+
+setTimeout(()=>{
+
+closeGiftModal();
+
+},900);
+
+}
+
+
+/* ================================================= */
+/* CLOSE GIFT MODAL */
+/* ================================================= */
+
+function closeGiftModal(){
+
+const modal =
+document.getElementById(
+"giftModal"
+);
+
+if(modal){
+
+modal.style.display =
+"none";
+
+}
+
+}
+
+
+/* ================================================= */
+/* UPDATE GIFT BUTTON */
+/* ================================================= */
+
+function updateGiftButton(){
+
+const button =
+document.getElementById(
+"giftTaskBtn"
+);
+
+if(!button) return;
+
+
+if(walletData.giftClaimed){
+
+button.disabled =
+true;
+
+button.classList.add(
+"done"
+);
+
+button.textContent =
+"✓ CLAIMED";
+
+}else{
+
+button.disabled =
+false;
+
+button.classList.remove(
+"done"
+);
+
+button.textContent =
+"OPEN";
+
+}
+
+}
+
+
+/* ================================================= */
+/* MEMO */
+/* ================================================= */
+
+function updateMemo(){
+
+const memo =
+document.getElementById(
+"memoText"
+);
+
+if(!memo) return;
+
+if(!walletData.memo){
+
+walletData.memo =
+"GRAM-" +
+Math.random()
+.toString(36)
+.substring(2,8)
+.toUpperCase();
+
+saveData();
+
+}
+
+memo.textContent =
+walletData.memo;
+
+}
+
+
+/* ================================================= */
+/* COPY ADDRESS */
+/* ================================================= */
+
+function copyAddress(){
+
+const element =
+document.getElementById(
+"depositAddress"
+);
+
+if(!element) return;
+
+copyText(
+element.textContent.trim(),
+"Address copied!"
+);
+
+}
+
+
+/* ================================================= */
+/* COPY MEMO */
+/* ================================================= */
+
+function copyMemo(){
+
+const memo =
+walletData.memo || "";
+
+copyText(
+memo,
+"Memo copied!"
+);
+
+}
+
+
+/* ================================================= */
+/* COPY FUNCTION */
+/* ================================================= */
+
+function copyText(text,message){
+
+if(
+navigator.clipboard &&
+navigator.clipboard.writeText
+){
+
+navigator.clipboard
+.writeText(text)
+.then(()=>{
+
+showAlert(
+"✓ " + message
+);
+
+})
+.catch(()=>{
+
+fallbackCopy(text,message);
+
+});
+
+}else{
+
+fallbackCopy(text,message);
+
+}
+
+}
+
+
+function fallbackCopy(text,message){
+
+const input =
+document.createElement(
+"textarea"
+);
+
+input.value =
+text;
+
+input.style.position =
+"fixed";
+
+input.style.opacity =
+"0";
+
+document.body.appendChild(
+input
+);
+
+input.select();
+
+try{
+
+document.execCommand(
+"copy"
+);
+
+showAlert(
+"✓ " + message
+);
+
+}catch(error){
+
+showAlert(
+"Copy failed."
+);
+
+}
+
+document.body.removeChild(
+input
+);
+
+}
+
+
+/* ================================================= */
+/* WITHDRAW */
+/* ================================================= */
+
+function withdraw(){
+
+const address =
+document.getElementById(
+"withdrawAddress"
+);
+
+const amountInput =
+document.getElementById(
+"withdrawAmount"
+);
+
+const error =
+document.getElementById(
+"withdrawError"
+);
+
+
+if(!address ||
+!amountInput ||
+!error){
+
+return;
+
+}
+
+
+error.style.display =
+"none";
+
+error.textContent =
+"";
+
+
+const walletAddress =
+address.value.trim();
+
+const amount =
+Number(
+amountInput.value
+);
+
+
+if(!walletAddress){
+
+showWithdrawError(
+"Please enter your TON wallet address."
+);
+
+return;
+
+}
+
+
+if(walletAddress.length < 20){
+
+showWithdrawError(
+"Please enter a valid TON wallet address."
+);
+
+return;
+
+}
+
+
+if(!amount ||
+amount <= 0){
+
+showWithdrawError(
+"Please enter a valid withdrawal amount."
+);
+
+return;
+
+}
+
+
+let balance = 0;
+
+
+if(selectedToken === "USDT"){
+
+balance =
+Number(walletData.usdt || 0);
+
+}else{
+
+balance =
+Number(walletData.gram || 0);
+
+if(balance < 1){
+
+showWithdrawError(
+"You need at least 1 GRAM to request a GRAM withdrawal."
+);
+
+return;
+
+}
+
+}
+
+
+if(amount > balance){
+
+showWithdrawError(
+"Insufficient " +
+selectedToken +
+" balance."
+);
+
+return;
+
+}
+
+
+/*
+Demo only:
+No real blockchain transaction is performed.
+*/
+
+showAlert(
+"✓ Withdrawal request submitted for demo."
+);
+
+
+amountInput.value = "";
+
+address.value = "";
+
+}
+
+
+/* ================================================= */
+/* WITHDRAW ERROR */
+/* ================================================= */
+
+function showWithdrawError(message){
+
+const error =
+document.getElementById(
+"withdrawError"
+);
+
+if(!error) return;
+
+error.textContent =
+message;
+
+error.style.display =
+"block";
+
+}
+
+
+/* ================================================= */
+/* ALERT */
+/* ================================================= */
+
+let alertTimer = null;
+
+
+function showAlert(message){
+
+const box =
+document.getElementById(
+"alertBox"
+);
+
+if(!box) return;
+
+
+box.textContent =
+message;
+
+box.style.display =
+"block";
+
+
+clearTimeout(
+alertTimer
+);
+
+
+alertTimer =
+setTimeout(()=>{
+
+box.style.display =
+"none";
+
+},3000);
+
+}
+
+
+/* ================================================= */
+/* LOADER */
+/* ================================================= */
+
+function startLoader(){
+
+const status =
+document.getElementById(
+"loaderStatus"
+);
+
+const loader =
+document.getElementById(
+"loader"
+);
+
+
+const messages = [
+
+"Initializing...",
+"Loading wallet...",
+"Checking tasks...",
+"Preparing dashboard..."
+
+];
+
+
+let index = 0;
+
+
+const interval =
+setInterval(()=>{
+
+index++;
+
+if(index < messages.length){
+
+if(status){
+
+status.textContent =
+messages[index];
+
+}
+
+}
+
+},500);
+
+
+setTimeout(()=>{
+
+clearInterval(interval);
+
+if(status){
+
+status.textContent =
+"Ready";
+
+}
+
+setTimeout(()=>{
+
+if(loader){
+
+loader.style.opacity =
+"0";
+
+loader.style.transition =
+"opacity .35s ease";
+
+setTimeout(()=>{
+
+loader.style.display =
+"none";
+
+},350);
+
+}
+
+if(!walletData.giftClaimed){
+
+setTimeout(()=>{
+
+showWelcome();
+
+},450);
+
+}
+
+},300);
+
+},2200);
+
+}
+
+
+/* ================================================= */
+/* INITIALIZE */
+/* ================================================= */
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+updateWallet();
+
+updateMemo();
+
+updateGiftButton();
+
+startLoader();
+
+}
+);
+
+
+/* ================================================= */
+/* PREVENT DOUBLE CLAIM */
+/* ================================================= */
+
+window.addEventListener(
+"storage",
+event => {
+
+if(
+event.key === STORAGE_KEY
+){
+
+walletData =
+loadData();
+
+updateWallet();
+
+}
+
+});
+
+
+/* ================================================= */
+/* SAVE BEFORE PAGE CLOSE */
+/* ================================================= */
+
+window.addEventListener(
+"beforeunload",
+()=>{
+
+saveData();
+
+});
+
+</script></body></html>
