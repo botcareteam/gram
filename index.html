@@ -6,1242 +6,1947 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+      content="width=device-width, initial-scale=1.0">
 
 <title>GRAM AIRDROO</title>
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet">
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 
 <style>
 
-:root{
---bg:#05070d;
---card:rgba(255,255,255,.055);
---border:rgba(255,255,255,.10);
---blue:#168cff;
---cyan:#00e5ff;
---green:#27e58c;
---red:#ff6262;
---yellow:#ffc857;
---muted:#8c96a8;
-}
+/* =========================
+   BASIC
+========================= */
 
-*{
-box-sizing:border-box;
--webkit-tap-highlight-color:transparent;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
-html{
-scroll-behavior:smooth;
+html {
+    width: 100%;
+    min-height: 100%;
+    scroll-behavior: smooth;
 }
 
-body{
-margin:0;
-min-height:100vh;
+body {
+    width: 100%;
+    min-height: 100vh;
 
-background:
-radial-gradient(
-circle at 50% -10%,
-rgba(0,229,255,.18),
-transparent 35%
-),
-var(--bg);
+    background: #06080c;
+    color: #ffffff;
 
-color:white;
-font-family:Inter,Arial,sans-serif;
+    font-family:
+        "Nunito",
+        Arial,
+        sans-serif;
+
+    overflow-x: hidden;
 }
+
+
+/* =========================
+   APP
+========================= */
+
+#app {
+    width: 100%;
+    max-width: 520px;
+
+    min-height: 100vh;
 
-button{
-font-family:inherit;
-cursor:pointer;
+    margin: 0 auto;
+
+    padding:
+        17px
+        15px
+        115px;
+
+    position: relative;
 }
+
+
+/* =========================
+   PAGE
+========================= */
+
+.page {
+    display: none;
+
+    width: 100%;
 
-button:disabled{
-opacity:.55;
-cursor:not-allowed;
+    position: relative;
+
+    margin: 0;
+    padding: 0;
 }
 
-.app{
-width:100%;
-max-width:520px;
-margin:auto;
-padding-bottom:30px;
+.page.active {
+    display: block;
+
+    animation:
+        pageIn .25s ease;
 }
+
+
+@keyframes pageIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-.page{
-display:none;
 }
 
-.page.active{
-display:block;
-animation:pageIn .3s ease;
+
+/* =========================
+   TOP BAR
+========================= */
+
+.top-bar {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
 }
+
+.brand {
 
-@keyframes pageIn{
-from{
-opacity:0;
-transform:translateY(8px);
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    flex: 1;
 }
-to{
-opacity:1;
-transform:translateY(0);
+
+.brand-icon {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 13px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #20d889,
+            #0fae70
+        );
+
+    color: #06110c;
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 8px 25px
+        rgba(32,216,137,.20);
 }
+
+.brand-name {
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+    letter-spacing: .2px;
 }
+
+.profile {
+
+    width: 42px;
+    height: 42px;
 
+    border-radius: 50%;
 
-/* ================= LOADER ================= */
+    border: 1px solid #252c38;
 
-#loader{
-position:fixed;
-inset:0;
-z-index:99999;
+    background: #11161f;
 
-background:#05070d;
+    color: #ffffff;
 
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
 }
+
+
+/* =========================
+   BALANCE CARD
+========================= */
 
-.loader-logo{
-width:82px;
-height:82px;
+.balance-card {
 
-border-radius:26px;
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(32,216,137,.17),
+            transparent 55%
+        ),
+        #10141c;
 
-display:flex;
-align-items:center;
-justify-content:center;
+    border: 1px solid #202733;
 
-font-size:38px;
-font-weight:900;
+    border-radius: 24px;
 
-background:
-linear-gradient(
-135deg,
-#007aff,
-#00e5ff
-);
+    padding: 22px;
 
-box-shadow:
-0 0 45px
-rgba(0,229,255,.35);
+    margin-bottom: 20px;
 
-animation:pulse 1.6s infinite;
+    box-shadow:
+        0 15px 45px
+        rgba(0,0,0,.25);
 }
 
-@keyframes pulse{
-0%,100%{
-transform:scale(1);
+.balance-title {
+
+    color: #8993a5;
+
+    font-size: 13px;
+
+    margin-bottom: 8px;
 }
-50%{
-transform:scale(1.06);
+
+.balance-value {
+
+    font-size: 34px;
+
+    font-weight: 800;
 }
+
+.balance-value span:last-child {
+
+    color: #20d889;
+
+    font-size: 17px;
+
+    margin-left: 5px;
 }
 
-.loader-title{
-margin-top:22px;
-font-size:18px;
-font-weight:900;
-letter-spacing:2px;
+.balance-network {
+
+    color: #8993a5;
+
+    font-size: 12px;
+
+    margin-top: 7px;
 }
+
+
+/* =========================
+   SECTION TITLE
+========================= */
+
+.section-title {
+
+    display: flex;
 
-.loader-status{
-margin-top:8px;
-color:var(--muted);
-font-size:12px;
+    align-items: center;
+    justify-content: space-between;
+
+    margin:
+        22px
+        2px
+        12px;
 }
 
-.loader-bar{
-width:190px;
-height:4px;
+.section-title h2 {
 
-margin-top:25px;
+    font-size: 18px;
+
+    font-weight: 800;
+}
 
-background:#18202d;
+.section-title span {
 
-border-radius:10px;
+    color: #8993a5;
 
-overflow:hidden;
+    font-size: 12px;
 }
 
-.loader-bar span{
-display:block;
 
-width:0;
-height:100%;
+/* =========================
+   WORK TASK
+========================= */
 
-background:
-linear-gradient(
-90deg,
-var(--blue),
-var(--cyan)
-);
+.task-list {
 
-animation:loading 2.2s forwards;
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 11px;
 }
+
+.task-card {
 
-@keyframes loading{
-to{
-width:100%;
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    background: #10141c;
+
+    border: 1px solid #202733;
+
+    border-radius: 17px;
+
+    padding: 13px;
 }
+
+.task-icon {
+
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    border-radius: 13px;
+
+    background: #162238;
+
+    color: #4c8dff;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
 }
 
+.task-info {
 
-/* ================= WELCOME ================= */
+    flex: 1;
+
+    min-width: 0;
+}
 
-#welcomePopup{
-position:fixed;
-inset:0;
+.task-name {
 
-z-index:9998;
+    font-size: 14px;
 
-display:none;
+    font-weight: 700;
+}
 
-align-items:center;
-justify-content:center;
+.task-reward {
 
-padding:25px;
+    color: #20d889;
 
-background:rgba(0,0,0,.84);
+    font-size: 12px;
 
-backdrop-filter:blur(9px);
+    margin-top: 2px;
 }
+
+.task-btn {
 
-.welcome-card{
-width:100%;
-max-width:380px;
+    border: 0;
 
-padding:30px 22px;
+    outline: 0;
 
-text-align:center;
+    flex-shrink: 0;
 
-border-radius:28px;
+    background: #20d889;
 
-background:
-linear-gradient(
-145deg,
-rgba(0,122,255,.18),
-rgba(0,229,255,.05)
-),
-#0b1018;
+    color: #06110c;
 
-border:
-1px solid
-rgba(0,229,255,.18);
+    padding:
+        9px
+        14px;
 
-box-shadow:
-0 25px 80px
-rgba(0,0,0,.5);
+    border-radius: 11px;
 
-animation:popup .35s ease;
+    font-weight: 800;
+
+    font-size: 12px;
 }
+
+.task-btn:disabled {
 
-@keyframes popup{
-from{
-opacity:0;
-transform:scale(.9);
+    opacity: .45;
 }
 
-to{
-opacity:1;
-transform:scale(1);
+.task-btn.completed {
+
+    background: #18231f;
+
+    color: #20d889;
 }
+
+
+/* =========================
+   GIFT CARD
+========================= */
+
+.gift-card {
+
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border-radius: 22px;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(255,200,87,.16),
+            transparent 55%
+        ),
+        #10141c;
+
+    border: 1px solid #292d34;
 }
+
+.gift-card-top {
+
+    display: flex;
+
+    align-items: center;
 
-.gift-big{
-font-size:75px;
-animation:giftFloat 1.6s infinite;
+    gap: 12px;
 }
 
-@keyframes giftFloat{
-50%{
-transform:translateY(-7px);
+.gift-card-icon {
+
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        rgba(255,200,87,.12);
+
+    font-size: 25px;
 }
+
+.gift-card h3 {
+
+    font-size: 17px;
 }
+
+.gift-card p {
+
+    color: #8993a5;
+
+    font-size: 12px;
 
-.welcome-card h1{
-margin:15px 0 8px;
-font-size:26px;
+    margin-top: 3px;
 }
 
-.welcome-card p{
-color:var(--muted);
-font-size:13px;
-line-height:1.6;
+.gift-open-btn {
+
+    width: 100%;
+
+    border: 0;
+
+    outline: 0;
+
+    margin-top: 15px;
+
+    padding: 12px;
+
+    border-radius: 13px;
+
+    background: #ffc857;
+
+    color: #15110a;
+
+    font-weight: 800;
+
+    font-family: inherit;
 }
+
+
+/* =========================
+   PROFESSIONAL FOOTER
+========================= */
+
+.home-footer {
 
+    margin-top: 25px;
 
-/* ================= HEADER ================= */
+    padding: 18px 15px;
 
-.header{
-display:flex;
-align-items:center;
-justify-content:space-between;
+    text-align: center;
 
-padding:18px;
+    border-top:
+        1px solid #1c232e;
 }
 
-.brand{
-display:flex;
-align-items:center;
-gap:10px;
+.home-footer-title {
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    color: #dfe5ee;
 }
 
-.brand-icon{
-width:42px;
-height:42px;
+.home-footer-text {
 
-display:flex;
-align-items:center;
-justify-content:center;
+    color: #707b8d;
 
-border-radius:13px;
+    font-size: 11px;
 
-font-weight:900;
+    line-height: 1.6;
 
-background:
-linear-gradient(
-135deg,
-#007aff,
-#00e5ff
-);
+    margin-top: 6px;
 }
+
+.home-footer-status {
+
+    display: inline-flex;
+
+    align-items: center;
 
-.brand-name{
-font-size:16px;
-font-weight:900;
+    gap: 6px;
+
+    margin-top: 10px;
+
+    color: #20d889;
+
+    font-size: 11px;
+
+    font-weight: 700;
 }
+
+.home-footer-dot {
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
 
-.brand-sub{
-color:var(--muted);
-font-size:10px;
-margin-top:3px;
+    background: #20d889;
+
+    box-shadow:
+        0 0 8px
+        rgba(32,216,137,.7);
 }
+
+
+/* =========================
+   PAGE HEADER
+========================= */
 
-.user-icon{
-width:42px;
-height:42px;
+.page-header {
 
-border-radius:50%;
+    display: flex;
 
-display:flex;
-align-items:center;
-justify-content:center;
+    align-items: center;
+
+    gap: 14px;
+
+    margin-bottom: 24px;
+}
 
-background:#111925;
+.page-header h2 {
 
-border:
-1px solid
-var(--border);
+    font-size: 24px;
 
-color:#42a5ff;
+    font-weight: 800;
 }
 
+.back-btn {
 
-/* ================= WALLET ================= */
+    width: 48px;
+    height: 48px;
 
-.wallet{
-margin:8px 16px;
+    flex-shrink: 0;
 
-padding:21px;
+    border: 0;
 
-border-radius:25px;
+    border-radius: 17px;
 
-background:
-linear-gradient(
-145deg,
-rgba(0,122,255,.18),
-rgba(0,229,255,.04)
-),
-var(--card);
+    background: #111720;
 
-border:
-1px solid
-rgba(0,229,255,.15);
+    color: #ffffff;
+
+    font-size: 20px;
 }
+
+
+/* =========================
+   WALLET
+========================= */
 
-.wallet-title{
-display:flex;
-align-items:center;
-gap:8px;
+.wallet-main-card {
 
-color:var(--muted);
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(32,216,137,.18),
+            transparent 55%
+        ),
+        #10141c;
 
-font-size:12px;
-font-weight:700;
+    border: 1px solid #202733;
+
+    border-radius: 25px;
+
+    padding: 28px 25px;
+
+    margin-bottom: 20px;
 }
+
+.wallet-label {
 
-.wallet-title i{
-color:var(--cyan);
+    color: #8993a5;
+
+    font-size: 13px;
 }
+
+.wallet-total {
+
+    display: flex;
 
-.balance{
-display:flex;
-align-items:center;
-justify-content:space-between;
+    align-items: baseline;
 
-margin-top:18px;
+    gap: 7px;
 
-padding:15px;
+    margin-top: 10px;
 
-border-radius:17px;
+    font-size: 35px;
 
-background:
-rgba(0,0,0,.18);
+    font-weight: 800;
+
+    min-width: 0;
 }
+
+.wallet-total span:last-child {
+
+    color: #20d889;
 
-.balance-left{
-display:flex;
-align-items:center;
-gap:12px;
+    font-size: 17px;
 }
 
-.token-icon{
-width:42px;
-height:42px;
+.network-label {
 
-border-radius:14px;
+    display: flex;
 
-display:flex;
-align-items:center;
-justify-content:center;
+    align-items: center;
 
-font-weight:900;
+    gap: 8px;
+
+    color: #8993a5;
+
+    font-size: 13px;
+
+    margin-top: 12px;
 }
+
+.usdt-small-icon {
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+
+    display: flex;
 
-.usdt-icon{
-background:#123d38;
-color:#27e5a0;
+    align-items: center;
+    justify-content: center;
+
+    background: #20d889;
+
+    color: #06110c;
+
+    font-weight: 800;
 }
+
+
+/* =========================
+   ASSET CARD
+========================= */
+
+.asset-card {
 
-.gram-icon{
-background:#102f45;
-color:#38a8ff;
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    background: #10141c;
+
+    border: 1px solid #202733;
+
+    border-radius: 20px;
+
+    padding: 18px;
+
+    margin-bottom: 12px;
 }
+
+.asset-left {
 
-.token-name{
-font-size:14px;
-font-weight:900;
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    min-width: 0;
 }
+
+.asset-icon {
+
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
 
-.token-sub{
-color:var(--muted);
-font-size:10px;
-margin-top:3px;
+    border-radius: 16px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #0d2e26;
+
+    color: #20d889;
+
+    font-size: 21px;
+
+    font-weight: 800;
 }
+
+.bnb-icon {
 
-.amount{
-font-size:20px;
-font-weight:900;
+    background: #29271d;
+
+    color: #ffc857;
 }
 
+.asset-left strong {
 
-/* ================= CARD ================= */
+    display: block;
 
-.card{
-margin:14px 16px;
+    font-size: 15px;
+}
 
-padding:18px;
+.asset-left span {
 
-border-radius:22px;
+    display: block;
 
-background:var(--card);
+    color: #8993a5;
 
-border:
-1px solid
-var(--border);
+    font-size: 12px;
 
-backdrop-filter:blur(15px);
+    margin-top: 2px;
 }
+
+.asset-balance {
 
-.card-title{
-font-size:15px;
-font-weight:900;
+    text-align: right;
 
-margin-bottom:14px;
+    white-space: nowrap;
 }
 
+.asset-balance strong {
 
-/* ================= ACTIONS ================= */
+    font-size: 17px;
+}
 
-.action-grid{
-display:grid;
+.asset-balance span {
 
-grid-template-columns:
-1fr 1fr;
+    color: #8993a5;
 
-gap:10px;
+    font-size: 11px;
+
+    margin-left: 3px;
 }
+
 
-.action-button{
-width:100%;
+/* =========================
+   WALLET ACTIONS
+========================= */
 
-min-height:78px;
+.wallet-actions {
 
-border:0;
+    display: grid;
 
-border-radius:18px;
+    grid-template-columns:
+        1fr 1fr;
 
-display:flex;
+    gap: 12px;
 
-flex-direction:column;
+    margin-top: 18px;
+}
 
-align-items:center;
+.primary-btn,
+.secondary-action-btn {
 
-justify-content:center;
+    width: 100%;
 
-gap:7px;
+    border: 0;
 
-font-size:12px;
+    outline: 0;
 
-font-weight:900;
-}
+    min-height: 48px;
+
+    border-radius: 14px;
 
-.action-button i{
-font-size:20px;
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 800;
 }
 
-.withdraw-action{
-color:#001018;
+.primary-btn {
 
-background:
-linear-gradient(
-135deg,
-#168cff,
-#00e5ff
-);
+    background: #20d889;
+
+    color: #06110c;
 }
+
+.secondary-action-btn {
 
-.deposit-action{
-color:white;
+    background: #151a23;
 
-background:#151d29;
+    color: #ffffff;
 
-border:
-1px solid
-var(--border);
+    border:
+        1px solid #272e3a;
 }
 
-.action-note{
-margin-top:10px;
 
-text-align:center;
+/* =========================
+   SUPPORT
+========================= */
 
-color:#667184;
+.support-card {
 
-font-size:9px;
+    text-align: center;
 
-line-height:1.5;
+    padding: 35px 22px;
+
+    border-radius: 25px;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(32,216,137,.16),
+            transparent 65%
+        ),
+        #10141c;
+
+    border: 1px solid #202733;
 }
 
+.support-logo {
 
-/* ================= TASK ================= */
+    width: 70px;
+    height: 70px;
 
-.task{
-display:flex;
-align-items:center;
+    margin:
+        0 auto 18px;
 
-gap:13px;
+    border-radius: 23px;
 
-padding:15px;
+    display: flex;
 
-margin-top:10px;
+    align-items: center;
+    justify-content: center;
 
-border-radius:17px;
+    background: #163329;
+
+    color: #20d889;
+
+    font-size: 29px;
+}
 
-background:#0c121b;
+.support-card h2 {
 
-border:
-1px solid
-rgba(255,255,255,.07);
+    font-size: 21px;
 }
 
-.task-icon{
-width:45px;
-height:45px;
+.support-card p {
 
-flex-shrink:0;
+    color: #8993a5;
 
-display:flex;
-align-items:center;
-justify-content:center;
+    font-size: 13px;
 
-border-radius:14px;
+    line-height: 1.6;
 
-font-size:20px;
+    margin:
+        9px 0 20px;
 }
+
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-nav {
+
+    position: fixed;
+
+    left: 50%;
+    bottom: 18px;
+
+    transform:
+        translateX(-50%);
 
-.task-gift{
-background:#38291a;
-color:#ffc857;
+    width:
+        calc(100% - 30px);
+
+    max-width: 490px;
+
+    height: 76px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    padding: 7px;
+
+    background:
+        rgba(16,20,28,.96);
+
+    border:
+        1px solid #242b37;
+
+    border-radius: 25px;
+
+    box-shadow:
+        0 15px 40px
+        rgba(0,0,0,.40);
+
+    backdrop-filter: blur(18px);
+
+    z-index: 9999;
 }
+
+.nav-btn {
+
+    border: 0;
 
-.task-info{
-flex:1;
+    outline: 0;
+
+    background: transparent;
+
+    color: #737d8e;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    border-radius: 19px;
+
+    font-family: inherit;
 }
+
+.nav-btn i {
 
-.task-name{
-font-size:13px;
-font-weight:900;
+    font-size: 21px;
 }
 
-.task-desc{
-color:var(--muted);
+.nav-btn span {
 
-font-size:10px;
+    font-size: 11px;
+}
+
+.nav-btn.active {
 
-margin-top:4px;
+    color: #20d889;
 }
 
-.task-reward{
-color:var(--green);
 
-font-size:11px;
+/* =========================
+   MODAL OVERLAY
+========================= */
 
-font-weight:900;
+.modal {
 
-margin-top:4px;
-}
+    position: fixed;
 
-.task-btn{
-border:0;
+    inset: 0;
 
-padding:9px 13px;
+    display: none;
 
-border-radius:11px;
+    align-items: center;
+    justify-content: center;
 
-background:
-linear-gradient(
-100deg,
-#168cff,
-#00e5ff
-);
+    padding:
+        18px;
 
-color:#001018;
+    background:
+        rgba(0,0,0,.78);
 
-font-size:10px;
+    z-index: 10000;
 
-font-weight:900;
+    overflow-y: auto;
 }
+
+.modal.show {
 
-.task-btn.done{
-background:#18231f;
-color:var(--green);
+    display: flex;
 }
 
 
-/* ================= AIRDROP MESSAGE ================= */
+/* =========================
+   MODAL CARD
+========================= */
 
-.airdrop-message{
-margin:14px 16px;
+.modal-card {
 
-padding:18px;
+    width: 100%;
 
-border-radius:20px;
+    max-width: 365px;
 
-background:
-linear-gradient(
-135deg,
-rgba(22,140,255,.10),
-rgba(0,229,255,.05)
-);
+    max-height:
+        calc(100vh - 36px);
 
-border:
-1px solid
-rgba(0,229,255,.12);
+    overflow-y: auto;
 
-text-align:center;
+    overflow-x: hidden;
+
+    background: #10141c;
+
+    border:
+        1px solid #252d39;
+
+    border-radius: 24px;
+
+    padding: 24px;
+
+    text-align: center;
+
+    margin: auto;
+
+    scrollbar-width: none;
 }
 
-.airdrop-message h3{
-margin:0 0 8px;
+.modal-card::-webkit-scrollbar {
 
-font-size:14px;
-font-weight:900;
+    display: none;
 }
 
-.airdrop-message p{
-margin:0;
 
-color:#8c96a8;
+/* =========================
+   MODAL TEXT
+========================= */
 
-font-size:10px;
+.modal-card h2 {
 
-line-height:1.7;
+    font-size: 24px;
+
+    margin-bottom: 8px;
 }
+
+.modal-card p {
 
+    color: #8993a5;
 
-/* ================= BUTTON ================= */
+    font-size: 13px;
 
-.btn{
-width:100%;
+    line-height: 1.5;
 
-border:0;
+    margin-bottom: 15px;
+}
+
 
-border-radius:15px;
+/* =========================
+   MODAL TOP
+========================= */
 
-padding:15px;
+.modal-top {
 
-margin-top:10px;
+    display: flex;
 
-font-size:14px;
+    align-items: center;
 
-font-weight:900;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
 }
 
-.btn-primary{
-color:#001018;
+.modal-top h2 {
 
-background:
-linear-gradient(
-100deg,
-#168cff,
-#00e5ff
-);
+    margin: 0;
 }
+
+.close-btn {
 
-.btn-secondary{
-color:white;
+    width: 38px;
+    height: 38px;
 
-background:#151c27;
+    border: 0;
 
-border:
-1px solid
-var(--border);
+    border-radius: 12px;
+
+    background: #181e27;
+
+    color: #ffffff;
+
+    font-size: 22px;
 }
 
 
-/* ================= BACK ================= */
+/* =========================
+   WALLET NETWORK
+========================= */
 
-.back{
-margin:18px 16px 5px;
+.wallet-network {
 
-display:flex;
-align-items:center;
+    display: flex;
 
-gap:9px;
+    align-items: center;
 
-color:#aab4c4;
+    gap: 12px;
 
-font-size:13px;
+    text-align: left;
 
-font-weight:800;
+    padding: 13px;
 
-cursor:pointer;
+    background: #151b24;
+
+    border-radius: 15px;
+
+    margin-bottom: 18px;
 }
+
+.network-icon {
 
+    width: 42px;
+    height: 42px;
 
-/* ================= NETWORK ================= */
+    flex-shrink: 0;
 
-.network{
-display:flex;
+    border-radius: 13px;
 
-align-items:center;
-justify-content:space-between;
+    display: flex;
 
-padding:12px;
+    align-items: center;
+    justify-content: center;
 
-background:#0c131d;
+    background: #20d889;
 
-border-radius:14px;
+    color: #06110c;
+
+    font-size: 19px;
+
+    font-weight: 800;
 }
+
+.wallet-network strong {
 
-.network-left{
-display:flex;
-align-items:center;
+    display: block;
 
-gap:10px;
+    font-size: 15px;
 }
 
-.ton-logo{
-width:38px;
-height:38px;
+.wallet-network span {
 
-display:flex;
-align-items:center;
-justify-content:center;
+    display: block;
 
-border-radius:12px;
+    color: #8993a5;
 
-background:#229ed9;
+    font-size: 11px;
 
-font-weight:900;
+    margin-top: 2px;
 }
+
+
+/* =========================
+   INPUT TITLE
+========================= */
+
+.input-title {
+
+    text-align: left;
 
-.network-name{
-font-size:13px;
-font-weight:900;
+    color: #8993a5;
+
+    font-size: 12px;
+
+    margin:
+        14px 0 7px;
 }
+
+
+/* =========================
+   COPY BOX
+========================= */
+
+.copy-box {
+
+    width: 100%;
 
-.network-type{
-color:var(--muted);
+    display: flex;
 
-font-size:10px;
+    align-items: center;
 
-margin-top:3px;
+    gap: 8px;
+
+    padding: 11px;
+
+    background: #151a23;
+
+    border:
+        1px solid #252d39;
+
+    border-radius: 13px;
+
+    text-align: left;
 }
+
+.copy-box span {
+
+    flex: 1;
 
+    min-width: 0;
 
-/* ================= ADDRESS ================= */
+    overflow-wrap: anywhere;
 
-.address{
-margin-top:14px;
+    word-break: break-all;
 
-padding:13px;
+    color: #dce2ea;
 
-border-radius:14px;
+    font-size: 11px;
 
-background:#080c12;
+    line-height: 1.4;
+}
+
+.copy-box button {
+
+    width: 36px;
+    height: 36px;
 
-border:
-1px solid
-var(--border);
+    flex-shrink: 0;
 
-word-break:break-all;
+    border: 0;
 
-font-size:11px;
+    border-radius: 10px;
 
-color:#cbd3df;
+    background: #202833;
+
+    color: #ffffff;
 }
+
+
+/* =========================
+   FORM INPUT
+========================= */
 
-.copy{
-width:100%;
+.form-input {
 
-margin-top:8px;
+    display: flex;
 
-padding:12px;
+    align-items: center;
 
-border:0;
+    gap: 8px;
 
-border-radius:12px;
+    width: 100%;
 
-background:#182433;
+    background: #151a23;
 
-color:white;
+    border:
+        1px solid #252d39;
 
-font-weight:800;
+    border-radius: 13px;
+
+    padding: 0 12px;
 }
+
+.form-input input {
+
+    width: 100%;
 
+    min-width: 0;
 
-/* ================= MEMO ================= */
+    height: 48px;
 
-.memo{
-margin-top:14px;
+    border: 0;
 
-padding:16px;
+    outline: 0;
 
-text-align:center;
+    background: transparent;
 
-border-radius:15px;
+    color: #ffffff;
 
-background:
-rgba(0,229,255,.05);
+    font-family: inherit;
 
-border:
-1px solid
-rgba(0,229,255,.12);
+    font-size: 14px;
 }
 
-.memo-label{
-color:var(--muted);
+.form-input input::placeholder {
 
-font-size:10px;
+    color: #667183;
 }
 
-.memo-value{
-margin-top:7px;
+.form-input > span {
 
-color:var(--cyan);
+    color: #20d889;
 
-font-size:20px;
+    font-size: 12px;
 
-font-weight:900;
+    font-weight: 800;
 
-letter-spacing:2px;
+    white-space: nowrap;
 }
 
 
-/* ================= INPUT ================= */
+/* =========================
+   BALANCE INFO
+========================= */
 
-.input{
-width:100%;
+.balance-info {
 
-padding:14px;
+    display: flex;
 
-margin-top:9px;
+    justify-content: space-between;
 
-border-radius:13px;
+    gap: 10px;
 
-border:
-1px solid
-var(--border);
+    padding: 12px;
 
-outline:none;
+    border-radius: 13px;
+
+    background: #151a23;
+
+    color: #8993a5;
+
+    font-size: 12px;
+}
 
-background:#090e15;
+.balance-info strong {
 
-color:white;
+    color: #20d889;
 
-font-size:13px;
+    white-space: nowrap;
 }
 
-.input:focus{
-border-color:var(--blue);
+
+/* =========================
+   FEE BOX
+========================= */
+
+.fee-box {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 10px;
+
+    margin-top: 12px;
 }
 
-.label{
-display:block;
+.fee-box > div {
 
-margin-top:14px;
+    padding: 11px;
 
-color:var(--muted);
+    background: #151a23;
 
-font-size:11px;
+    border-radius: 12px;
+
+    text-align: left;
 }
+
+.fee-box span {
+
+    display: block;
 
+    color: #8993a5;
 
-/* ================= TOKEN SELECT ================= */
+    font-size: 10px;
+}
 
-.token-selector{
-display:grid;
+.fee-box strong {
 
-grid-template-columns:
-1fr 1fr;
+    display: block;
 
-gap:10px;
+    margin-top: 3px;
 
-margin-top:10px;
+    font-size: 12px;
 }
+
+
+/* =========================
+   INFO BOX
+========================= */
+
+.info-box {
 
-.token-option{
-border:
-1px solid
-var(--border);
+    display: flex;
 
-background:#0b1119;
+    align-items: flex-start;
 
-color:white;
+    gap: 8px;
 
-border-radius:15px;
+    margin-top: 12px;
 
-padding:13px;
+    padding: 12px;
 
-display:flex;
+    border-radius: 13px;
 
-align-items:center;
+    background: #15231e;
 
-gap:10px;
+    color: #b6c2bf;
 
-font-weight:900;
+    font-size: 11px;
 
-text-align:left;
+    text-align: left;
+
+    line-height: 1.5;
 }
+
+.info-box i {
+
+    color: #20d889;
 
-.token-option.active{
-border-color:var(--cyan);
+    margin-top: 2px;
+}
 
-background:
-rgba(0,229,255,.08);
+.info-box b {
 
-box-shadow:
-0 0 0 1px
-rgba(0,229,255,.15);
+    color: #ffffff;
 }
+
+
+/* =========================
+   RULES
+========================= */
 
-.mini{
-width:34px;
-height:34px;
+.rules-box {
 
-border-radius:11px;
+    margin-top: 13px;
 
-display:flex;
+    padding: 13px;
 
-align-items:center;
+    border-radius: 13px;
 
-justify-content:center;
+    background: #151a23;
 
-font-weight:900;
+    text-align: left;
 }
 
-.mini-usdt{
-background:#123d38;
-color:#27e5a0;
+.rules-box h4 {
+
+    font-size: 13px;
+
+    margin-bottom: 7px;
 }
+
+.rules-box p {
+
+    margin: 4px 0;
+
+    color: #8993a5;
+
+    font-size: 10px;
 
-.mini-gram{
-background:#102f45;
-color:#38a8ff;
+    line-height: 1.5;
 }
 
-.selected-balance{
-margin-top:12px;
 
-padding:12px 14px;
+/* =========================
+   TASK MODAL
+========================= */
 
-border-radius:14px;
+.modal-icon {
 
-background:#0b121b;
+    width: 62px;
+    height: 62px;
 
-color:#aeb8c8;
+    margin:
+        0 auto 15px;
 
-font-size:11px;
+    border-radius: 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #153126;
+
+    color: #20d889;
+
+    font-size: 28px;
+}
+
+.task-countdown {
+
+    font-size: 32px;
+
+    font-weight: 800;
+
+    color: #20d889;
+
+    margin:
+        8px 0 16px;
 }
+
+
+/* =========================
+   GIFT MODAL
+========================= */
 
-.selected-balance strong{
-color:white;
+.gift-modal-card {
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(255,200,87,.13),
+            transparent 55%
+        ),
+        #10141c;
 }
+
+.gift-box {
+
+    font-size: 62px;
 
+    margin-bottom: 10px;
 
-/* ================= RULES ================= */
+    animation:
+        giftFloat 1.5s
+        ease-in-out
+        infinite;
+}
 
-.rules{
-margin-top:12px;
+@keyframes giftFloat {
 
-padding:14px;
+    0%,100% {
+        transform:
+            translateY(0)
+            rotate(0deg);
+    }
 
-border-radius:15px;
+    50% {
+        transform:
+            translateY(-7px)
+            rotate(-3deg);
+    }
+
+}
 
-background:
-rgba(255,255,255,.035);
+.gift-reward-text {
 
-border:
-1px solid
-rgba(255,255,255,.07);
+    margin:
+        15px 0 18px;
 
-font-size:10px;
+    padding: 15px;
 
-color:#9fa9ba;
+    border-radius: 15px;
 
-line-height:1.65;
+    background: #181a1f;
 }
 
-.rules-title{
-color:#fff;
+.gift-reward-text span {
 
-font-weight:900;
+    display: block;
 
-font-size:11px;
+    color: #ffc857;
 
-margin-bottom:6px;
+    font-size: 25px;
+
+    font-weight: 800;
 }
+
+.gift-reward-text small {
+
+    display: block;
 
-.rules strong{
-color:var(--yellow);
+    color: #8993a5;
+
+    margin-top: 3px;
 }
+
 
+/* =========================
+   REWARD MODAL
+========================= */
 
-/* ================= INFO ================= */
+.reward-icon {
 
-.info{
-margin-top:15px;
+    font-size: 58px;
 
-padding:14px;
+    margin-bottom: 10px;
 
-border-radius:15px;
+    animation:
+        rewardPop .5s ease;
+}
 
-background:
-rgba(255,200,87,.05);
+@keyframes rewardPop {
 
-border:
-1px solid
-rgba(255,200,87,.12);
+    0% {
+        transform: scale(.5);
+        opacity: 0;
+    }
 
-color:#aeb8c8;
+    70% {
+        transform: scale(1.15);
+    }
 
-font-size:11px;
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 
-line-height:1.6;
 }
+
+.reward-amount {
 
-.info strong{
-color:var(--yellow);
+    color: #20d889;
+
+    font-size: 30px;
+
+    font-weight: 800;
+
+    margin:
+        15px 0 20px;
 }
 
 
-/* ================= ERROR ================= */
+/* =========================
+   SECONDARY BUTTON
+========================= */
 
-.error-box{
-display:none;
+.secondary-btn {
 
-margin-top:14px;
+    width: 100%;
 
-padding:14px;
+    min-height: 46px;
 
-border-radius:15px;
+    margin-top: 9px;
 
-background:
-rgba(255,98,98,.07);
+    border:
+        1px solid #272e3a;
 
-border:
-1px solid
-rgba(255,98,98,.20);
+    border-radius: 13px;
 
-color:#ff8585;
+    background: #151a23;
 
-font-size:12px;
+    color: #ffffff;
 
-line-height:1.5;
+    font-family: inherit;
 
-font-weight:700;
+    font-size: 13px;
+
+    font-weight: 700;
 }
 
 
-/* ================= ALERT ================= */
+/* =========================
+   TOAST
+========================= */
 
-#alertBox{
-position:fixed;
+.toast {
 
-left:16px;
-right:16px;
+    position: fixed;
 
-bottom:20px;
+    left: 50%;
 
-z-index:100000;
+    bottom: 105px;
 
-display:none;
+    transform:
+        translateX(-50%)
+        translateY(15px);
 
-padding:15px 17px;
+    width:
+        calc(100% - 40px);
 
-border-radius:15px;
+    max-width: 390px;
 
-background:#121923;
+    padding: 13px 16px;
 
-border:
-1px solid
-var(--border);
+    display: flex;
 
-box-shadow:
-0 15px 50px
-rgba(0,0,0,.5);
+    align-items: center;
 
-font-size:12px;
+    gap: 9px;
 
-font-weight:700;
+    background: #151b23;
 
-animation:alertIn .25s ease;
-}
+    border:
+        1px solid #29313d;
+
+    border-radius: 14px;
 
-@keyframes alertIn{
-from{
-opacity:0;
-transform:translateY(20px);
+    color: #ffffff;
+
+    font-size: 12px;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        .25s ease;
+
+    z-index: 11000;
 }
+
+.toast.show {
+
+    opacity: 1;
 
-to{
-opacity:1;
-transform:translateY(0);
+    transform:
+        translateX(-50%)
+        translateY(0);
 }
+
+.toast i {
+
+    color: #20d889;
 }
+
+
+   /* =========================
+      LOADER
+   ========================= */
+
+#loader {
+
+    position: fixed;
 
+    inset: 0;
 
-/* ================= MODAL ================= */
+    z-index: 20000;
 
-.modal-overlay{
-position:fixed;
+    background: #06080c;
 
-inset:0;
+    display: flex;
 
-z-index:99999;
+    flex-direction: column;
 
-background:
-rgba(0,0,0,.86);
+    align-items: center;
 
-backdrop-filter:blur(8px);
+    justify-content: center;
 
-display:flex;
+    transition:
+        opacity .5s ease,
+        visibility .5s ease;
+}
 
-align-items:center;
+#loader.hide {
 
-justify-content:center;
+    opacity: 0;
 
-padding:20px;
+    visibility: hidden;
+
+    pointer-events: none;
 }
+
+.loader-orbit {
 
-.modal-card{
-width:100%;
+    width: 92px;
+    height: 92px;
 
-max-width:390px;
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 20px;
+}
 
-background:#0c121b;
+.orbit-ring {
 
-border:
-1px solid
-rgba(0,229,255,.18);
+    position: absolute;
 
-border-radius:25px;
+    inset: 0;
 
-padding:25px;
+    border:
+        3px solid #20d889;
 
-text-align:center;
+    border-left-color:
+        transparent;
 
-box-shadow:
-0 25px 80px
-rgba(0,0,0,.6);
+    border-radius: 50%;
 
-animation:popup .3s ease;
+    animation:
+        orbitSpin 1.2s linear infinite;
 }
 
-.modal-icon{
-font-size:55px;
-margin-bottom:10px;
+.orbit-logo {
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 17px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #20d889,
+            #0fae70
+        );
+
+    color: #06110c;
+
+    font-size: 24px;
+
+    font-weight: 800;
 }
+
+@keyframes orbitSpin {
 
-.modal-card h2{
-margin:0 0 10px;
-font-size:21px;
+    to {
+        transform: rotate(360deg);
+    }
+
 }
 
-.modal-card p{
-color:var(--muted);
+#loader h2 {
 
-font-size:12px;
+    font-size: 24px;
 
-line-height:1.6;
+    font-weight: 800;
 }
 
-.reward-number{
-margin:20px 0;
+#loader p {
 
-font-size:42px;
+    color: #8993a5;
 
-font-weight:900;
+    font-size: 12px;
 
-color:var(--green);
+    margin-top: 5px;
 }
+
+
+/* =========================
+   MOBILE FIX
+========================= */
+
+@media (max-width: 380px) {
 
+    #app {
 
-/* ================= FOOTER ================= */
+        padding-left: 11px;
+        padding-right: 11px;
 
-.footer{
-text-align:center;
+    }
 
-padding:20px;
+    .wallet-total {
 
-color:#596273;
+        font-size: 30px;
 
-font-size:10px;
+    }
+
+    .wallet-actions {
+
+        gap: 8px;
+
+    }
+
+    .modal {
+
+        padding: 12px;
+
+    }
+
+    .modal-card {
+
+        max-height:
+            calc(100vh - 24px);
+
+        padding: 18px;
+
+    }
+
 }
+
+
+/* =========================
+   EXTRA MODAL MOBILE FIX
+========================= */
 
-.demo-label{
-display:inline-block;
+@media (max-width: 430px) {
 
-margin-top:7px;
+    .modal-card {
+
+        width: 100%;
+
+        max-width: 390px;
+
+        max-height:
+            calc(100dvh - 24px);
+
+        padding: 20px 16px;
+
+    }
+
+    .copy-box span {
+
+        font-size: 10px;
+
+    }
+
+    .rules-box p {
+
+        font-size: 10px;
+
+    }
+
+}
 
-padding:4px 9px;
 
-border-radius:8px;
+/* =========================
+   PREVENT MODAL OVERFLOW
+========================= */
 
-background:#1b2029;
+body.modal-open {
 
-color:#778195;
+    overflow: hidden;
 
-font-size:9px;
 }
 
 </style>
@@ -1252,1859 +1957,2151 @@ font-size:9px;
 <body>
 
 
-<!-- ================= LOADER ================= -->
+<!-- =========================
+     LOADING SCREEN
+========================= -->
 
 <div id="loader">
 
-<div class="loader-logo">
-G
-</div>
+    <div class="loader-orbit">
 
-<div class="loader-title">
-GRAM AIRDROP
-</div>
+        <div class="orbit-ring"></div>
 
-<div class="loader-status"
-id="loaderStatus">
-Initializing...
-</div>
+        <div class="orbit-logo">
+            A
+        </div>
 
-<div class="loader-bar">
-<span></span>
-</div>
+    </div>
+
+    <h2>
+        GRAM AIRDROO
+    </h2>
+
+    <p>
+        Loading your dashboard...
+    </p>
 
 </div>
 
 
-<!-- ================= WELCOME ================= -->
 
-<div id="welcomePopup">
+<!-- =========================
+     MAIN APP
+========================= -->
 
-<div class="welcome-card">
+<div id="app">
 
-<div class="gift-big">
-🎁
-</div>
 
-<h1>
-Claim Free USDT
-</h1>
+    <!-- =========================
+         HOME PAGE
+    ========================= -->
 
-<p>
-Your welcome reward is waiting.
-Open the free gift box from the Tasks
-section to receive your reward.
-</p>
+    <div class="page active"
+         id="homePage">
 
-<button
-class="btn btn-primary"
-onclick="goToTasks()">
 
-🎁 CLAIM FREE USDT
+        <!-- TOP BAR -->
 
-</button>
+        <div class="top-bar">
 
-</div>
+            <div class="brand">
 
-</div>
+                <div class="brand-icon">
+                    A
+                </div>
 
+                <div class="brand-name">
+                    GRAM AIRDROO
+                </div>
 
-<!-- ================= ALERT ================= -->
+            </div>
 
-<div id="alertBox"></div>
+            <div class="profile">
 
+                <i class="fas fa-user"></i>
 
-<div class="app">
+            </div>
 
+        </div>
 
-<!-- ================================================= -->
-<!-- HOME -->
-<!-- ================================================= -->
 
-<section
-id="home"
-class="page active">
 
+        <!-- BALANCE -->
 
-<header class="header">
+        <div class="balance-card">
 
-<div class="brand">
+            <div class="balance-title">
+                Total Earning
+            </div>
 
-<div class="brand-icon">
-G
-</div>
+            <div class="balance-value">
 
-<div>
+                <span id="homeUSDTBalance">
+                    0.00
+                </span>
 
-<div class="brand-name">
-GRAM AIRDROP
-</div>
+                <span>
+                    USDT
+                </span>
 
-<div class="brand-sub">
-TON Network
-</div>
+            </div>
 
-</div>
+            <div class="balance-network">
+                USDT ( TON )
+            </div>
 
-</div>
+        </div>
 
-<div class="user-icon">
 
-<i class="fab fa-telegram-plane"></i>
 
-</div>
+        <!-- WORK TASK -->
 
-</header>
+        <div class="section-title">
 
+            <h2>
+                Work Task
+            </h2>
 
-<!-- ================= WALLET ================= -->
+            <span>
+                Earn USDT
+            </span>
 
-<div class="wallet">
+        </div>
 
-<div class="wallet-title">
 
-<i class="fa-solid fa-wallet"></i>
+        <div class="task-list">
 
-My Wallet
 
-</div>
+            <!-- TASK 1 -->
 
+            <div class="task-card">
 
-<!-- USDT -->
+                <div class="task-icon">
 
-<div class="balance">
+                    <i class="fab fa-telegram"></i>
 
-<div class="balance-left">
+                </div>
 
-<div class="token-icon usdt-icon">
-$
-</div>
+                <div class="task-info">
 
-<div>
+                    <div class="task-name">
+                        Join GRAM Channel
+                    </div>
 
-<div class="token-name">
-$USDT
-</div>
+                    <div class="task-reward">
+                        +0.20 USDT
+                    </div>
 
-<div class="token-sub">
-USDT Balance
-</div>
+                </div>
 
-</div>
+                <button
+                    class="task-btn"
+                    id="taskBtn1"
+                    onclick="startTask(1)">
 
-</div>
+                    Join
 
-<div
-class="amount"
-id="usdtBalance">
+                </button>
 
-0.00
+            </div>
 
-</div>
 
-</div>
 
+            <!-- TASK 2 -->
 
-<!-- GRAM -->
+            <div class="task-card">
 
-<div class="balance">
+                <div class="task-icon">
 
-<div class="balance-left">
+                    <i class="fab fa-telegram"></i>
 
-<div class="token-icon gram-icon">
-G
-</div>
+                </div>
 
-<div>
+                <div class="task-info">
 
-<div class="token-name">
-$GRAM
-</div>
+                    <div class="task-name">
+                        Join Keeper Channel
+                    </div>
 
-<div class="token-sub">
-GRAM Balance
-</div>
+                    <div class="task-reward">
+                        +0.20 USDT
+                    </div>
 
-</div>
+                </div>
 
-</div>
+                <button
+                    class="task-btn"
+                    id="taskBtn2"
+                    onclick="startTask(2)">
 
-<div
-class="amount"
-id="gramBalance">
+                    Join
 
-0.00
+                </button>
 
-</div>
+            </div>
 
-</div>
 
-</div>
 
+            <!-- TASK 3 -->
 
-<!-- ================= WALLET ACTIONS ================= -->
+            <div class="task-card">
 
-<div class="card">
+                <div class="task-icon">
 
-<div class="card-title">
-Wallet
-</div>
+                    <i class="fab fa-telegram"></i>
 
-<div class="action-grid">
+                </div>
 
-<button
-class="action-button withdraw-action"
-onclick="showPage('withdraw')">
+                <div class="task-info">
 
-<i class="fa-solid fa-arrow-up"></i>
+                    <div class="task-name">
+                        Join Telegram Channel
+                    </div>
 
-Withdraw
+                    <div class="task-reward">
+                        +0.20 USDT
+                    </div>
 
-</button>
+                </div>
 
+                <button
+                    class="task-btn"
+                    id="taskBtn3"
+                    onclick="startTask(3)">
 
-<button
-class="action-button deposit-action"
-onclick="showPage('deposit')">
+                    Join
 
-<i class="fa-solid fa-arrow-down"></i>
+                </button>
 
-Deposit
+            </div>
 
-</button>
+        </div>
 
-</div>
 
-<div class="action-note">
 
-Secure wallet management for your
-airdrop rewards.
+        <!-- GIFT BOX -->
 
-</div>
+        <div class="gift-card">
 
-</div>
+            <div class="gift-card-top">
 
+                <div class="gift-card-icon">
+                    🎁
+                </div>
 
-<!-- ================= TASKS ================= -->
+                <div>
 
-<div class="card">
+                    <h3>
+                        Free Gift Box
+                    </h3>
 
-<div class="card-title">
+                    <p>
+                        Claim your free random reward
+                    </p>
 
-<i class="fa-solid fa-list-check"></i>
+                </div>
 
-Tasks
+            </div>
 
-</div>
 
+            <button
+                class="gift-open-btn"
+                id="giftOpenBtn"
+                onclick="openGift()">
 
-<div class="task">
+                🎁 Open Gift Box
 
-<div class="task-icon task-gift">
-🎁
-</div>
+            </button>
 
-<div class="task-info">
+        </div>
 
-<div class="task-name">
-Free Gift Box
-</div>
 
-<div class="task-desc">
-One-time welcome reward
-</div>
 
-<div class="task-reward">
-1.00–100.00 USDT
-</div>
+        <!-- PROFESSIONAL FOOTER -->
 
-</div>
+        <div class="home-footer">
 
+            <div class="home-footer-title">
+                GRAM AIRDROO
+            </div>
 
-<button
-id="giftTaskBtn"
-class="task-btn"
-onclick="openGiftTask()">
+            <div class="home-footer-text">
 
-OPEN
+                Complete tasks, collect rewards
+                and manage your balance
+                in one simple dashboard.
 
-</button>
+            </div>
 
-</div>
+            <div class="home-footer-status">
 
-</div>
+                <span class="home-footer-dot"></span>
 
+                System Online
 
-<!-- ================= AIRDROP MESSAGE ================= -->
+            </div>
 
-<div class="airdrop-message">
+        </div>
 
-<h3>
-🚀 Welcome to GRAM Airdrop
-</h3>
 
-<p>
+    </div>
 
-Explore the GRAM Airdrop dashboard,
-complete available tasks and collect
-your rewards. Your wallet balance is
-saved automatically on this device.
 
-</p>
 
-</div>
+    <!-- =========================
+         WALLET PAGE
+    ========================= -->
 
+    <div class="page"
+         id="walletPageContent">
 
-<div class="footer">
 
-GRAM OFFICIAL AIRDROP
+        <div class="page-header">
 
-<br>
+            <button
+                class="back-btn"
+                onclick="showPage('homePage')">
 
-<span class="demo-label">
+                <i class="fas fa-arrow-left"></i>
 
-GRAM AIRDROP • TELEGRAM<br>
-TONKEEPER x $GRAM
+            </button>
 
-</span>
+            <h2>
+                Wallet
+            </h2>
 
-</div>
+        </div>
 
-</section>
 
 
+        <div class="wallet-main-card">
 
-<!-- ================================================= -->
-<!-- DEPOSIT -->
-<!-- ================================================= -->
+            <span class="wallet-label">
+                Total Balance
+            </span>
 
-<section
-id="deposit"
-class="page">
+            <div class="wallet-total">
 
+                <span id="walletUSDTBalance">
+                    0.00
+                </span>
 
-<div
-class="back"
-onclick="showPage('home')">
+                <span>
+                    USDT
+                </span>
 
-<i class="fa-solid fa-arrow-left"></i>
+            </div>
 
-Back to Wallet
+            <div class="network-label">
 
-</div>
+                <span class="usdt-small-icon">
+                    ₮
+                </span>
 
+                USDT ( TON )
 
-<div class="card">
+            </div>
 
-<div class="card-title">
+        </div>
 
-Deposit & Verify<br>
-<p><small><em><u>deposit At Last 1 $GRAM</u></em></small></p>
 
-</div>
 
+        <!-- USDT -->
 
-<div class="network">
+        <div class="asset-card">
 
-<div class="network-left">
+            <div class="asset-left">
 
-<div class="ton-logo">
-T
-</div>
+                <div class="asset-icon">
+                    ₮
+                </div>
 
-<div>
+                <div>
 
-<div class="network-name">
-TON Network
-</div>
+                    <strong>
+                        USDT
+                    </strong>
 
-<div class="network-type">
-GRAM Token
-</div>
+                    <span>
+                        ( TON )
+                    </span>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-</div>
+            <div class="asset-balance">
 
+                <strong id="walletAssetBalance">
+                    0.00
+                </strong>
 
-<div
-class="address"
-id="depositAddress">
+                <span>
+                    USDT
+                </span>
 
-UQCgDd9IQXJIyu1QLZ1VTdrXSF_1ey5iI0lNkWV7Qs8nnQQN
+            </div>
 
-</div>
+        </div>
 
 
-<button
-class="copy"
-onclick="copyAddress()">
 
-<i class="fa-regular fa-copy"></i>
+        <!-- BNB -->
 
-Copy Address
+        <div class="asset-card">
 
-</button>
+            <div class="asset-left">
 
+                <div class="asset-icon bnb-icon">
+                    G
+                </div>
 
-<div class="memo">
+                <div>
 
-<div class="memo-label">
+                    <strong>
+                        GRAM
+                    </strong>
 
-YOUR UNIQUE MEMO
+                    <span>
+                        GRAM
+                    </span>
 
-</div>
+                </div>
 
-<div
-class="memo-value"
-id="memoText">
+            </div>
 
----
+            <div class="asset-balance">
 
-</div>
+                <strong id="bnbBalance">
+                    0.000
+                </strong>
 
-<button
-class="copy"
-onclick="copyMemo()">
+                <span>
+                    GRAM
+                </span>
 
-Copy Memo
+            </div>
 
-</button>
+        </div>
 
-</div>
 
 
-<div class="rules">
+        <!-- ACTIONS -->
 
-<div class="rules-title">
-Deposit Rules
-</div>
+        <div class="wallet-actions">
 
-• Use the correct <strong>TON Network</strong>.<br>
+            <button
+                class="primary-btn"
+                onclick="openWithdraw()">
 
-• Send only the supported token to the
-displayed address.<br>
+                <i class="fas fa-arrow-up"></i>
 
-• Use your unique <strong>MEMO</strong>
-when required.<br>
+                Withdrawal
 
-• Always verify the address before sending.<br>
+            </button>
 
-• This detect real blockchain deposits.
 
-</div>
+            <button
+                class="secondary-action-btn"
+                onclick="openDeposit()">
 
+                <i class="fas fa-arrow-down"></i>
 
-<div class="info">
+                Deposit
 
-<strong>
-Deposit Verification
-</strong>
+            </button>
 
-<br>
+        </div>
 
-This is a real Real blockchain
-deposit detection and confirmation are
-performed by this page.
 
-</div>
+    </div>
 
-</div>
 
-</section>
 
+    <!-- =========================
+         SUPPORT PAGE
+    ========================= -->
 
+    <div class="page"
+         id="supportPageContent">
 
-<!-- ================================================= -->
-<!-- WITHDRAW -->
-<!-- ================================================= -->
 
-<section
-id="withdraw"
-class="page">
+        <div class="page-header">
 
+            <button
+                class="back-btn"
+                onclick="showPage('homePage')">
 
-<div
-class="back"
-onclick="showPage('home')">
+                <i class="fas fa-arrow-left"></i>
 
-<i class="fa-solid fa-arrow-left"></i>
+            </button>
 
-Back to Wallet
+            <h2>
+                Support
+            </h2>
 
-</div>
+        </div>
 
 
-<div class="card">
+        <div class="support-card">
 
-<div class="card-title">
-Withdraw
-</div>
+            <div class="support-logo">
 
+                <i class="fas fa-headset"></i>
 
-<div class="network">
+            </div>
 
-<div class="network-left">
+            <h2>
+                Need Help?
+            </h2>
 
-<div class="ton-logo">
-T
-</div>
+            <p>
 
-<div>
+                If you have any questions
+                or problems, contact our
+                support team.
 
-<div class="network-name">
-TON Network
-</div>
+            </p>
 
-<div class="network-type">
-USDT / GRAM
-</div>
+            <button
+                class="primary-btn"
+                onclick="openSupport()">
 
-</div>
+                <i class="fab fa-telegram"></i>
+
+                Contact Now
 
+            </button>
+
+        </div>
+
+
+    </div>
+
+
 </div>
+<!-- =========================
+     PART 2 — MODALS
+========================= -->
+
+
+<!-- =========================
+     TASK MODAL
+========================= -->
 
+<div class="modal" id="taskModal">
+
+    <div class="modal-card">
+
+        <div class="modal-icon">
+
+            <i class="fas fa-check-circle"></i>
+
+        </div>
+
+        <h2>
+            Task Started
+        </h2>
+
+        <p>
+            Please stay on the channel
+            for a few seconds.
+        </p>
+
+        <div class="task-countdown"
+             id="taskTimer">
+            5
+        </div>
+
+        <button
+            class="primary-btn"
+            id="taskClaimBtn"
+            onclick="claimTask()"
+            disabled>
+
+            Please Wait...
+
+        </button>
+
+        <button
+            class="secondary-btn"
+            onclick="closeModal('taskModal')">
+
+            Close
+
+        </button>
+
+    </div>
+
 </div>
+
+
+
+<!-- =========================
+     GIFT MODAL
+========================= -->
 
+<div class="modal" id="giftModal">
 
-<!-- SELECT TOKEN -->
+    <div class="modal-card gift-modal-card">
 
-<label class="label">
-Select Token
-</label>
+        <div class="gift-box">
+            🎁
+        </div>
 
+        <h2>
+            Free Gift Box
+        </h2>
 
-<div class="token-selector">
+        <p>
+            You have a free gift waiting
+            for you!
+        </p>
 
+        <div class="gift-reward-text">
 
-<button
-id="tokenUSDT"
-class="token-option active"
-onclick="selectToken('USDT')">
+            <span>
+                $1 – $50
+            </span>
 
-<span class="mini mini-usdt">
-$
-</span>
+            <small>
+                USDT Reward
+            </small>
 
-<span>
-$USDT
-</span>
+        </div>
 
-</button>
+        <button
+            class="primary-btn"
+            id="giftClaimBtn"
+            onclick="claimGift()">
 
+            🎁 Claim Free Gift
 
-<button
-id="tokenGRAM"
-class="token-option"
-onclick="selectToken('GRAM')">
+        </button>
 
-<span class="mini mini-gram">
-G
-</span>
+        <button
+            class="secondary-btn"
+            onclick="closeModal('giftModal')">
 
-<span>
-$GRAM
-</span>
+            Close
 
-</button>
+        </button>
 
+    </div>
 
 </div>
+
+
+
+<!-- =========================
+     REWARD MODAL
+========================= -->
+
+<div class="modal" id="rewardModal">
+
+    <div class="modal-card">
+
+        <div class="reward-icon">
+            🎉
+        </div>
+
+        <h2>
+            Congratulations!
+        </h2>
 
+        <p>
+            Your reward has been added
+            to your balance.
+        </p>
 
-<!-- BALANCE -->
+        <div class="reward-amount"
+             id="rewardAmount">
 
-<div class="selected-balance">
+            +0.20 USDT
 
-Available Balance:
+        </div>
 
-<strong id="selectedBalance">
-0.00 USDT
-</strong>
+        <button
+            class="primary-btn"
+            onclick="closeModal('rewardModal')">
 
+            Continue
+
+        </button>
+
+    </div>
+
 </div>
+
+
+
+<!-- =========================
+     DEPOSIT MODAL
+========================= -->
+
+<div class="modal" id="depositModal">
+
+    <div class="modal-card">
+
+        <div class="modal-top">
+
+            <h2>
+                Deposit
+            </h2>
+
+            <button
+                class="close-btn"
+                onclick="closeModal('depositModal')">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <div class="wallet-network">
+
+            <div class="network-icon">
+                ₮
+            </div>
+
+            <div>
+
+                <strong>
+                    USDT
+                </strong>
+
+                <span>
+                    TON Network
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="input-title">
+            Deposit Address
+        </div>
+
+        <div class="copy-box">
 
+            <span id="depositAddress">
+                UQBHZqb9YmSMFTEY2gg4TuEI23ramhHUCO4YcbRAy6SUchOS
+            </span>
 
-<!-- ADDRESS -->
+            <button
+                onclick="copyText('depositAddress')">
 
-<label class="label">
-Wallet Address
-</label>
+                <i class="fas fa-copy"></i>
 
-<input
-id="withdrawAddress"
-class="input"
-type="text"
-placeholder="Enter your TON wallet address">
+            </button>
 
+        </div>
 
-<!-- AMOUNT -->
 
-<label class="label">
-Amount
-</label>
+        <div class="input-title">
+            Memo
+        </div>
 
-<input
-id="withdrawAmount"
-class="input"
-type="number"
-min="0.01"
-step="0.01"
-placeholder="Enter amount">
+        <div class="copy-box">
 
+            <span id="depositMemo">
+                ORBIT-0000
+            </span>
 
-<!-- ERROR -->
+            <button
+                onclick="copyText('depositMemo')">
 
-<div
-id="withdrawError"
-class="error-box">
+                <i class="fas fa-copy"></i>
+
+            </button>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <i class="fas fa-info-circle"></i>
+
+            <span>
+
+                Minimum deposit:
+                <b>1 $GRAM</b>
+
+            </span>
+
+        </div>
+
+
+        <div class="rules-box">
+
+            <h4>
+                Deposit Rules
+            </h4>
+
+            <p>
+                • Send only TON assets
+                to this address.
+            </p>
+
+            <p>
+                • Always check the network
+                before sending.
+            </p>
+
+            <p>
+                • Deposits are processed
+                after network confirmation.
+            </p>
+
+        </div>
+
+
+        <button
+            class="primary-btn"
+            onclick="closeModal('depositModal')">
+
+            Done
+
+        </button>
+
+    </div>
+
 </div>
+
+
+
+<!-- =========================
+     WITHDRAW MODAL
+========================= -->
 
+<div class="modal" id="withdrawModal">
 
-<!-- CONFIRM -->
+    <div class="modal-card">
 
-<button
-class="btn btn-primary"
-onclick="withdraw()">
+        <div class="modal-top">
 
-<i class="fa-solid fa-paper-plane"></i>
+            <h2>
+                Withdraw
+            </h2>
 
-Confirm Withdrawal
+            <button
+                class="close-btn"
+                onclick="closeModal('withdrawModal')">
 
-</button>
+                ×
 
+            </button>
 
-<!-- CANCEL -->
+        </div>
 
-<button
-class="btn btn-secondary"
-onclick="showPage('home')">
 
-Cancel
+        <div class="wallet-network">
 
-</button>
+            <div class="network-icon">
+                ₮
+            </div>
 
+            <div>
 
-<!-- WITHDRAWAL REQUIREMENTS -->
+                <strong>
+                    USDT
+                </strong>
 
-<div class="rules">
+                <span>
+                    TON Network
+                </span>
 
-<div class="rules-title">
+            </div>
 
-Withdrawal Requirements
+        </div>
 
+
+        <div class="balance-info">
+
+            <span>
+                Available Balance:
+            </span>
+
+            <strong>
+
+                <span id="withdrawBalance">
+                    0.00
+                </span>
+
+                USDT
+
+            </strong>
+
+        </div>
+
+
+        <div class="input-title">
+            Amount
+        </div>
+
+        <div class="form-input">
+
+            <input
+                type="number"
+                id="withdrawAmount"
+                placeholder="Enter amount"
+                min="1"
+                step="0.01">
+
+            <span>
+                USDT
+            </span>
+
+        </div>
+
+
+        <div class="input-title">
+            USDT TON Address
+        </div>
+
+        <div class="form-input">
+
+            <input
+                type="text"
+                id="withdrawAddress"
+                placeholder="Enter BEP20 address">
+
+        </div>
+
+
+        <div class="fee-box">
+
+            <div>
+
+                <span>
+                    Network
+                </span>
+
+                <strong>
+                    TON
+                </strong>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Network Fee
+                </span>
+
+                <strong>
+                    1 GRAM
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <i class="fas fa-info-circle"></i>
+
+            <span>
+
+                Minimum withdrawal:
+                <b>1 USDT</b>
+
+            </span>
+
+        </div>
+
+
+        <button
+            class="primary-btn"
+            onclick="submitWithdraw()">
+
+            Withdraw
+
+        </button>
+
+    </div>
+
 </div>
 
-• Select the token you want to withdraw.<br>
 
-• Your selected token must have sufficient
-<strong>balance</strong>.<br>
 
-• For GRAM withdrawals, you need at least
-<strong>1 GRAM</strong> in your wallet.<br>
+<!-- =========================
+     TOAST
+========================= -->
 
-• Enter a valid TON wallet address.<br>
+<div class="toast" id="toast">
 
-• Enter an amount within your available balance.<br>
+    <i class="fas fa-check-circle"></i>
 
-• Withdrawal requests are subject to verification.
+    <span id="toastMessage">
+        Success
+    </span>
 
 </div>
+
 
 
-<div class="info">
+<!-- =========================
+     BOTTOM NAVIGATION
+========================= -->
 
-<strong>
-Important
-</strong>
+<div class="bottom-nav">
 
-<br>
+    <button
+        class="nav-btn active"
+        id="navHome"
+        onclick="showPage('homePage')">
 
-You need at least <strong>1 GRAM</strong>
-in your wallet to make a GRAM withdrawal.
-If your GRAM balance is below 1 GRAM,
-thbelow 1 GRAM,
-withdrawal is unavailable.
+        <i class="fas fa-home"></i>
 
-</div></div></div></section><!-- ================================================= --><!-- GIFT MODAL --><!-- ================================================= --><div
-id="giftModal"
-class="modal-overlay"
-style="display:none;"><div class="modal-card"><div class="modal-icon">
-🎁
-</div><h2>
-Your Free Gift
-</h2><p>
-Congratulations! You have unlocked
-your one-time welcome reward.
-</p><div
-class="reward-number"
-id="rewardNumber">0.00 USDT
+        <span>
+            Home
+        </span>
 
-</div><p>
-This reward can only be claimed once
-on this device.
-</p><button
-id="claimGiftBtn"
-class="btn btn-primary"
-onclick="claimGift()">
+    </button>
 
-🎁 CLAIM REWARD
 
-</button><button
-class="btn btn-secondary"
-onclick="closeGiftModal()">
+    <button
+        class="nav-btn"
+        id="navWallet"
+        onclick="showPage('walletPageContent')">
 
-Close
+        <i class="fas fa-wallet"></i>
 
-</button></div></div></div><script>
+        <span>
+            Wallet
+        </span>
 
-/* ================================================= */
-/* TELEGRAM */
-/* ================================================= */
+    </button>
+
+
+    <button
+        class="nav-btn"
+        id="navSupport"
+        onclick="showPage('supportPageContent')">
+
+        <i class="fas fa-headset"></i>
+
+        <span>
+            Support
+        </span>
+
+    </button>
+
+</div>
+<!-- =========================
+     PART 3 — JAVASCRIPT
+========================= -->
 
-const tg =
-window.Telegram &&
-window.Telegram.WebApp
-? window.Telegram.WebApp
-: null;
+<script>
 
-if(tg){
+const tg = window.Telegram?.WebApp;
 
-try{
+if (tg) {
 
-tg.ready();
-tg.expand();
+    tg.ready();
 
-}catch(e){}
+    tg.expand();
 
 }
 
 
-/* ================================================= */
-/* STORAGE */
-/* ================================================= */
+/* =========================
+   STORAGE
+========================= */
 
-const STORAGE_KEY = "gram_airdrop_demo_v1";
+const STORAGE_KEY = "gramAirdrooData";
 
 
-function getDefaultData(){
+let data =
+    JSON.parse(
+        localStorage.getItem(STORAGE_KEY)
+    ) || {
 
-return{
+        usdt: 0,
 
-usdt:0,
-gram:0,
+        bnb: 0,
 
-giftClaimed:false,
-giftReward:0,
+        tasks: {
+            1: false,
+            2: false,
+            3: false
+        },
 
-memo:
-"GRAM-" +
-Math.random()
-.toString(36)
-.substring(2,8)
-.toUpperCase()
+        giftClaimed: false,
+
+        memo:
+            "ORBIT-" +
+            Math.floor(
+                1000 +
+                Math.random() * 9000
+            )
+
+    };
+
+
+function saveData() {
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(data)
+    );
+
+}
+
+
+
+/* =========================
+   TASK SETTINGS
+========================= */
+
+const taskLinks = {
+
+    1:
+        "https://t.me/gram",
+
+    2:
+        "https://t.me/keeper_en",
+
+    3:
+        "https://t.me/telegram"
 
 };
 
-}
+
+const TASK_REWARD = 0.20;
 
 
-function loadData(){
+let currentTask = null;
 
-try{
-
-const saved =
-localStorage.getItem(STORAGE_KEY);
-
-if(saved){
-
-const data =
-JSON.parse(saved);
-
-return{
-
-...getDefaultData(),
-...data
-
-};
-
-}
-
-}catch(error){
-
-console.log(
-"Storage read error:",
-error
-);
-
-}
-
-return getDefaultData();
-
-}
+let taskInterval = null;
 
 
-let walletData =
-loadData();
+
+/* =========================
+   UPDATE BALANCE
+========================= */
+
+function updateBalance() {
+
+    const balance =
+        Number(
+            data.usdt || 0
+        ).toFixed(2);
 
 
-function saveData(){
-
-try{
-
-localStorage.setItem(
-STORAGE_KEY,
-JSON.stringify(walletData)
-);
-
-}catch(error){
-
-console.log(
-"Storage save error:",
-error
-);
-
-}
-
-}
+    const homeBalance =
+        document.getElementById(
+            "homeUSDTBalance"
+        );
 
 
-/* ================================================= */
-/* FORMAT NUMBER */
-/* ================================================= */
-
-function formatNumber(number){
-
-return Number(number || 0)
-.toFixed(2);
-
-}
+    const walletBalance =
+        document.getElementById(
+            "walletUSDTBalance"
+        );
 
 
-/* ================================================= */
-/* UPDATE WALLET */
-/* ================================================= */
+    const walletAsset =
+        document.getElementById(
+            "walletAssetBalance"
+        );
 
-function updateWallet(){
 
-const usdt =
-document.getElementById(
-"usdtBalance"
-);
+    const withdrawBalance =
+        document.getElementById(
+            "withdrawBalance"
+        );
 
-const gram =
-document.getElementById(
-"gramBalance"
-);
 
-if(usdt){
+    const bnbBalance =
+        document.getElementById(
+            "bnbBalance"
+        );
 
-usdt.textContent =
-formatNumber(
-walletData.usdt
-);
 
-}
+    if (homeBalance)
+        homeBalance.textContent =
+            balance;
 
-if(gram){
 
-gram.textContent =
-formatNumber(
-walletData.gram
-);
+    if (walletBalance)
+        walletBalance.textContent =
+            balance;
 
-}
 
-updateSelectedBalance();
+    if (walletAsset)
+        walletAsset.textContent =
+            balance;
 
-updateGiftButton();
+
+    if (withdrawBalance)
+        withdrawBalance.textContent =
+            balance;
+
+
+    if (bnbBalance)
+        bnbBalance.textContent =
+            Number(
+                data.bnb || 0
+            ).toFixed(3);
 
 }
 
 
-/* ================================================= */
-/* SELECTED BALANCE */
-/* ================================================= */
 
-let selectedToken = "USDT";
+/* =========================
+   PAGE NAVIGATION
+========================= */
+
+function showPage(pageId) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page => {
+
+            page.classList.remove(
+                "active"
+            );
+
+        });
 
 
-function updateSelectedBalance(){
-
-const element =
-document.getElementById(
-"selectedBalance"
-);
-
-if(!element) return;
+    const page =
+        document.getElementById(
+            pageId
+        );
 
 
-if(selectedToken === "USDT"){
+    if (page) {
 
-element.textContent =
-formatNumber(
-walletData.usdt
-) + " USDT";
+        page.classList.add(
+            "active"
+        );
 
-}else{
+    }
 
-element.textContent =
-formatNumber(
-walletData.gram
-) + " GRAM";
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(btn => {
+
+            btn.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    if (
+        pageId === "homePage"
+    ) {
+
+        document
+            .getElementById(
+                "navHome"
+            )
+            ?.classList.add(
+                "active"
+            );
+
+    }
+
+
+    if (
+        pageId === "walletPageContent"
+    ) {
+
+        document
+            .getElementById(
+                "navWallet"
+            )
+            ?.classList.add(
+                "active"
+            );
+
+    }
+
+
+    if (
+        pageId === "supportPageContent"
+    ) {
+
+        document
+            .getElementById(
+                "navSupport"
+            )
+            ?.classList.add(
+                "active"
+            );
+
+    }
+
+
+    updateBalance();
 
 }
 
-}
 
 
-/* ================================================= */
-/* TOKEN SELECT */
-/* ================================================= */
+/* =========================
+   MODALS
+========================= */
 
-function selectToken(token){
+function openModal(id) {
 
-selectedToken =
-token;
-
-const usdtButton =
-document.getElementById(
-"tokenUSDT"
-);
-
-const gramButton =
-document.getElementById(
-"tokenGRAM"
-);
+    const modal =
+        document.getElementById(id);
 
 
-if(usdtButton){
+    if (modal) {
 
-usdtButton.classList.toggle(
-"active",
-token === "USDT"
-);
+        modal.classList.add(
+            "show"
+        );
 
-}
+        document.body.classList.add(
+            "modal-open"
+        );
 
-if(gramButton){
-
-gramButton.classList.toggle(
-"active",
-token === "GRAM"
-);
+    }
 
 }
 
 
-const amount =
-document.getElementById(
-"withdrawAmount"
-);
+function closeModal(id) {
 
-if(amount){
+    const modal =
+        document.getElementById(id);
 
-amount.value = "";
+
+    if (modal) {
+
+        modal.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    const anyOpen =
+        document.querySelector(
+            ".modal.show"
+        );
+
+
+    if (!anyOpen) {
+
+        document.body.classList.remove(
+            "modal-open"
+        );
+
+    }
 
 }
 
-updateSelectedBalance();
+
+
+/* =========================
+   START TASK
+========================= */
+
+function startTask(taskNumber) {
+
+    if (
+        data.tasks[taskNumber]
+    ) {
+
+        showToast(
+            "This task is already completed."
+        );
+
+        return;
+
+    }
+
+
+    currentTask =
+        taskNumber;
+
+
+    const claimBtn =
+        document.getElementById(
+            "taskClaimBtn"
+        );
+
+
+    const timer =
+        document.getElementById(
+            "taskTimer"
+        );
+
+
+    if (claimBtn) {
+
+        claimBtn.disabled = true;
+
+        claimBtn.textContent =
+            "Please Wait...";
+
+    }
+
+
+    let seconds = 5;
+
+
+    if (timer) {
+
+        timer.textContent =
+            seconds;
+
+    }
+
+
+    openModal(
+        "taskModal"
+    );
+
+
+    window.open(
+        taskLinks[taskNumber],
+        "_blank"
+    );
+
+
+    clearInterval(
+        taskInterval
+    );
+
+
+    taskInterval =
+        setInterval(() => {
+
+            seconds--;
+
+
+            if (timer) {
+
+                timer.textContent =
+                    seconds;
+
+            }
+
+
+            if (seconds <= 0) {
+
+                clearInterval(
+                    taskInterval
+                );
+
+
+                if (claimBtn) {
+
+                    claimBtn.disabled =
+                        false;
+
+                    claimBtn.textContent =
+                        "✓ Claim +0.20 USDT";
+
+                }
+
+            }
+
+        }, 1000);
 
 }
 
 
-/* ================================================= */
-/* PAGE NAVIGATION */
-/* ================================================= */
 
-function showPage(pageId){
+/* =========================
+   CLAIM TASK
+========================= */
+
+function claimTask() {
+
+    if (!currentTask)
+        return;
+
+
+    if (
+        data.tasks[currentTask]
+    ) {
+
+        closeModal(
+            "taskModal"
+        );
+
+        return;
+
+    }
+
+
+    data.tasks[currentTask] =
+        true;
+
+
+    data.usdt =
+        Number(
+            data.usdt || 0
+        ) + TASK_REWARD;
+
+
+    saveData();
+
+
+    updateBalance();
+
+    updateTaskButtons();
+
+
+    closeModal(
+        "taskModal"
+    );
+
+
+    showReward(
+        "+" +
+        TASK_REWARD.toFixed(2) +
+        " USDT"
+    );
+
+
+    currentTask = null;
+
+}
+
+
+
+/* =========================
+   TASK BUTTONS
+========================= */
+
+function updateTaskButtons() {
+
+    for (
+        let i = 1;
+        i <= 3;
+        i++
+    ) {
+
+        const btn =
+            document.getElementById(
+                "taskBtn" + i
+            );
+
+
+        if (!btn)
+            continue;
+
+
+        if (
+            data.tasks[i]
+        ) {
+
+            btn.textContent =
+                "✓ DONE";
+
+            btn.disabled =
+                true;
+
+            btn.classList.add(
+                "completed"
+            );
+
+        } else {
+
+            btn.textContent =
+                "Join";
+
+            btn.disabled =
+                false;
+
+            btn.classList.remove(
+                "completed"
+            );
+
+        }
+
+    }
+
+}
+
+
+
+/* =========================
+   OPEN GIFT
+========================= */
+
+function openGift() {
+
+    if (
+        data.giftClaimed
+    ) {
+
+        showToast(
+            "Gift already claimed."
+        );
+
+        return;
+
+    }
+
+
+    openModal(
+        "giftModal"
+    );
+
+}
+
+
+
+/* =========================
+   CLAIM GIFT
+========================= */
+
+function claimGift() {
+
+    if (
+        data.giftClaimed
+    ) {
+
+        closeModal(
+            "giftModal"
+        );
+
+        showToast(
+            "Gift already claimed."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Random reward:
+       $15.00 - $30.00
+    */
+
+    const reward =
+        Math.floor(
+            1500 +
+            Math.random() * 1501
+        ) / 100;
+
+
+    data.usdt =
+        Number(
+            data.usdt || 0
+        ) + reward;
+
+
+    data.giftClaimed =
+        true;
+
+
+    saveData();
+
+
+    updateBalance();
+
+
+    closeModal(
+        "giftModal"
+    );
+
+
+    showReward(
+        "+" +
+        reward.toFixed(2) +
+        " USDT"
+    );
+
+
+    updateGiftButton();
+
+}
+
+
+
+/* =========================
+   GIFT BUTTON
+========================= */
+
+function updateGiftButton() {
+
+    const modalBtn =
+        document.getElementById(
+            "giftClaimBtn"
+        );
+
+
+    const openBtn =
+        document.getElementById(
+            "giftOpenBtn"
+        );
+
+
+    if (
+        data.giftClaimed
+    ) {
+
+        if (modalBtn) {
+
+            modalBtn.disabled =
+                true;
+
+            modalBtn.textContent =
+                "✓ Gift Claimed";
+
+            modalBtn.classList.add(
+                "completed"
+            );
+
+        }
+
+
+        if (openBtn) {
+
+            openBtn.disabled =
+                true;
+
+            openBtn.textContent =
+                "✓ Gift Already Claimed";
+
+        }
+
+    } else {
+
+        if (modalBtn) {
+
+            modalBtn.disabled =
+                false;
+
+            modalBtn.textContent =
+                "🎁 Claim Free Gift";
+
+            modalBtn.classList.remove(
+                "completed"
+            );
+
+        }
+
+
+        if (openBtn) {
+
+            openBtn.disabled =
+                false;
+
+            openBtn.textContent =
+                "🎁 Open Gift Box";
+
+        }
+
+    }
+
+}
+
+
+
+/* =========================
+   REWARD MODAL
+========================= */
+
+function showReward(amount) {
+
+    const rewardAmount =
+        document.getElementById(
+            "rewardAmount"
+        );
+
+
+    if (rewardAmount) {
+
+        rewardAmount.textContent =
+            amount;
+
+    }
+
+
+    openModal(
+        "rewardModal"
+    );
+
+}
+
+
+
+/* =========================
+   DEPOSIT
+========================= */
+
+function openDeposit() {
+
+    const memo =
+        document.getElementById(
+            "depositMemo"
+        );
+
+
+    if (memo) {
+
+        memo.textContent =
+            data.memo;
+
+    }
+
+
+    openModal(
+        "depositModal"
+    );
+
+}
+
+
+
+/* =========================
+   WITHDRAW
+========================= */
+
+function openWithdraw() {
+
+    updateBalance();
+
+
+    openModal(
+        "withdrawModal"
+    );
+
+}
+
+
+
+/* =========================
+   WITHDRAW SUBMIT
+========================= */
+
+function submitWithdraw() {
+
+    const amountInput =
+        document.getElementById(
+            "withdrawAmount"
+        );
+
+
+    const addressInput =
+        document.getElementById(
+            "withdrawAddress"
+        );
+
+
+    const amount =
+        Number(
+            amountInput.value
+        );
+
+
+    const address =
+        addressInput.value.trim();
+
+
+    if (
+        !amount ||
+        amount < 1
+    ) {
+
+        showToast(
+            "Minimum withdrawal is 1 USDT."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        amount >
+        Number(
+            data.usdt || 0
+        )
+    ) {
+
+        showToast(
+            "Insufficient USDT balance."
+        );
+
+        return;
+
+    }
+
+
+    const bep20Regex =
+        /^UQ[a-fA-F0-9]{40}$/;
+
+
+    if (
+        !bep20Regex.test(
+            address
+        )
+    ) {
+
+        showToast(
+            "Enter a valid USDT (TON) address."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        Number(
+            data.bnb || 0
+        ) < 0.002
+    ) {
+
+        showToast(
+            "You need 1 GRAM for the network fee."
+        );
+
+        return;
+
+    }
+
+
+    closeModal(
+        "withdrawModal"
+    );
+
+
+    showToast(
+        "Withdrawal request submitted."
+    );
+
+
+    amountInput.value =
+        "";
+
+
+    addressInput.value =
+        "";
+
+}
+
+
+
+/* =========================
+   COPY
+========================= */
+
+function copyText(elementId) {
+
+    const element =
+        document.getElementById(
+            elementId
+        );
+
+
+    if (!element)
+        return;
+
+
+    const text =
+        element.textContent.trim();
+
+
+    if (
+        navigator.clipboard
+    ) {
+
+        navigator.clipboard
+            .writeText(text)
+            .then(() => {
+
+                showToast(
+                    "Copied successfully."
+                );
+
+            })
+            .catch(() => {
+
+                showToast(
+                    "Copy failed."
+                );
+
+            });
+
+    } else {
+
+        showToast(
+            "Copy is not supported."
+        );
+
+    }
+
+}
+
+
+
+/* =========================
+   SUPPORT
+========================= */
+
+function openSupport() {
+
+    window.open(
+        "https://t.me/gram",
+        "_blank"
+    );
+
+}
+
+
+
+/* =========================
+   TOAST
+========================= */
+
+let toastTimeout;
+
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    const messageElement =
+        document.getElementById(
+            "toastMessage"
+        );
+
+
+    if (!toast)
+        return;
+
+
+    if (messageElement) {
+
+        messageElement.textContent =
+            message;
+
+    }
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimeout
+    );
+
+
+    toastTimeout =
+        setTimeout(() => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        }, 2500);
+
+}
+
+
+
+/* =========================
+   CLOSE MODAL BY OUTSIDE TAP
+========================= */
 
 document
-.querySelectorAll(".page")
-.forEach(page => {
+    .querySelectorAll(".modal")
+    .forEach(modal => {
 
-page.classList.remove(
-"active"
-);
+        modal.addEventListener(
+            "click",
+            function(e) {
 
-});
+                if (
+                    e.target === modal
+                ) {
 
+                    closeModal(
+                        modal.id
+                    );
 
-const page =
-document.getElementById(
-pageId
-);
+                }
 
-if(page){
+            }
+        );
 
-page.classList.add(
-"active"
-);
+    });
 
-}
 
 
-window.scrollTo({
+/* =========================
+   INITIALIZE
+========================= */
 
-top:0,
-behavior:"smooth"
+updateBalance();
 
-});
-
-
-if(pageId === "deposit"){
-
-updateMemo();
-
-}
-
-if(pageId === "withdraw"){
-
-updateSelectedBalance();
-
-}
-
-}
-
-
-/* ================================================= */
-/* GO TO TASKS */
-/* ================================================= */
-
-function goToTasks(){
-
-closeWelcome();
-
-showPage("home");
-
-setTimeout(()=>{
-
-const task =
-document.querySelector(
-".task"
-);
-
-if(task){
-
-task.scrollIntoView({
-
-behavior:"smooth",
-block:"center"
-
-});
-
-}
-
-},150);
-
-}
-
-
-/* ================================================= */
-/* WELCOME POPUP */
-/* ================================================= */
-
-function showWelcome(){
-
-const popup =
-document.getElementById(
-"welcomePopup"
-);
-
-if(!popup) return;
-
-if(walletData.giftClaimed){
-
-popup.style.display =
-"none";
-
-return;
-
-}
-
-popup.style.display =
-"flex";
-
-}
-
-
-function closeWelcome(){
-
-const popup =
-document.getElementById(
-"welcomePopup"
-);
-
-if(popup){
-
-popup.style.display =
-"none";
-
-}
-
-}
-
-
-/* ================================================= */
-/* RANDOM REWARD */
-/* 20.00 - 50.00 */
-/* ================================================= */
-
-function generateReward(){
-
-const min = 20;
-const max = 50;
-
-const value =
-Math.random() *
-(max - min) +
-min;
-
-
-/*
-Keep two decimal places.
-Examples:
-20.26
-26.66
-45.62
-33.22
-*/
-
-return Number(
-value.toFixed(2)
-);
-
-}
-
-
-/* ================================================= */
-/* OPEN GIFT */
-/* ================================================= */
-
-function openGiftTask(){
-
-if(walletData.giftClaimed){
-
-showAlert(
-"🎁 This gift has already been claimed."
-);
+updateTaskButtons();
 
 updateGiftButton();
 
-return;
 
-}
 
+/* =========================
+   LOADER
+========================= */
 
-const reward =
-generateReward();
+setTimeout(() => {
 
-walletData.giftReward =
-reward;
+    const loader =
+        document.getElementById(
+            "loader"
+        );
 
-saveData();
 
+    if (loader) {
 
-const rewardNumber =
-document.getElementById(
-"rewardNumber"
-);
+        loader.classList.add(
+            "hide"
+        );
 
-if(rewardNumber){
+    }
 
-rewardNumber.textContent =
-formatNumber(reward) +
-" USDT";
+}, 2500);
 
-}
 
 
-const modal =
-document.getElementById(
-"giftModal"
-);
+/* =========================
+   EXTRA SAFETY
+========================= */
 
-if(modal){
+setTimeout(() => {
 
-modal.style.display =
-"flex";
+    updateBalance();
 
-}
+    updateTaskButtons();
 
-}
+    updateGiftButton();
 
+}, 100);
 
-/* ================================================= */
-/* CLAIM GIFT */
-/* ================================================= */
+</script>
+<!-- =========================
+     PART 4 — END
+========================= -->
 
-function claimGift(){
+</body>
 
-if(walletData.giftClaimed){
-
-showAlert(
-"🎁 Reward already claimed."
-);
-
-closeGiftModal();
-
-return;
-
-}
-
-
-const reward =
-Number(
-walletData.giftReward || 0
-);
-
-
-if(reward <= 0){
-
-showAlert(
-"Unable to create reward. Please try again."
-);
-
-return;
-
-}
-
-
-/*
-Add reward ONLY ONCE.
-The flag is saved immediately.
-*/
-
-walletData.usdt =
-Number(walletData.usdt || 0) +
-reward;
-
-walletData.giftClaimed =
-true;
-
-saveData();
-
-
-updateWallet();
-
-
-const claimButton =
-document.getElementById(
-"claimGiftBtn"
-);
-
-if(claimButton){
-
-claimButton.disabled =
-true;
-
-claimButton.textContent =
-"✓ CLAIMED";
-
-}
-
-
-const giftButton =
-document.getElementById(
-"giftTaskBtn"
-);
-
-if(giftButton){
-
-giftButton.disabled =
-true;
-
-giftButton.classList.add(
-"done"
-);
-
-giftButton.textContent =
-"✓ CLAIMED";
-
-}
-
-
-showAlert(
-"🎉 " +
-formatNumber(reward) +
-" USDT reward added!"
-);
-
-
-setTimeout(()=>{
-
-closeGiftModal();
-
-},900);
-
-}
-
-
-/* ================================================= */
-/* CLOSE GIFT MODAL */
-/* ================================================= */
-
-function closeGiftModal(){
-
-const modal =
-document.getElementById(
-"giftModal"
-);
-
-if(modal){
-
-modal.style.display =
-"none";
-
-}
-
-}
-
-
-/* ================================================= */
-/* UPDATE GIFT BUTTON */
-/* ================================================= */
-
-function updateGiftButton(){
-
-const button =
-document.getElementById(
-"giftTaskBtn"
-);
-
-if(!button) return;
-
-
-if(walletData.giftClaimed){
-
-button.disabled =
-true;
-
-button.classList.add(
-"done"
-);
-
-button.textContent =
-"✓ CLAIMED";
-
-}else{
-
-button.disabled =
-false;
-
-button.classList.remove(
-"done"
-);
-
-button.textContent =
-"OPEN";
-
-}
-
-}
-
-
-/* ================================================= */
-/* MEMO */
-/* ================================================= */
-
-function updateMemo(){
-
-const memo =
-document.getElementById(
-"memoText"
-);
-
-if(!memo) return;
-
-if(!walletData.memo){
-
-walletData.memo =
-"GRAM-" +
-Math.random()
-.toString(36)
-.substring(2,8)
-.toUpperCase();
-
-saveData();
-
-}
-
-memo.textContent =
-walletData.memo;
-
-}
-
-
-/* ================================================= */
-/* COPY ADDRESS */
-/* ================================================= */
-
-function copyAddress(){
-
-const element =
-document.getElementById(
-"depositAddress"
-);
-
-if(!element) return;
-
-copyText(
-element.textContent.trim(),
-"Address copied!"
-);
-
-}
-
-
-/* ================================================= */
-/* COPY MEMO */
-/* ================================================= */
-
-function copyMemo(){
-
-const memo =
-walletData.memo || "";
-
-copyText(
-memo,
-"Memo copied!"
-);
-
-}
-
-
-/* ================================================= */
-/* COPY FUNCTION */
-/* ================================================= */
-
-function copyText(text,message){
-
-if(
-navigator.clipboard &&
-navigator.clipboard.writeText
-){
-
-navigator.clipboard
-.writeText(text)
-.then(()=>{
-
-showAlert(
-"✓ " + message
-);
-
-})
-.catch(()=>{
-
-fallbackCopy(text,message);
-
-});
-
-}else{
-
-fallbackCopy(text,message);
-
-}
-
-}
-
-
-function fallbackCopy(text,message){
-
-const input =
-document.createElement(
-"textarea"
-);
-
-input.value =
-text;
-
-input.style.position =
-"fixed";
-
-input.style.opacity =
-"0";
-
-document.body.appendChild(
-input
-);
-
-input.select();
-
-try{
-
-document.execCommand(
-"copy"
-);
-
-showAlert(
-"✓ " + message
-);
-
-}catch(error){
-
-showAlert(
-"Copy failed."
-);
-
-}
-
-document.body.removeChild(
-input
-);
-
-}
-
-
-/* ================================================= */
-/* WITHDRAW */
-/* ================================================= */
-
-function withdraw(){
-
-const address =
-document.getElementById(
-"withdrawAddress"
-);
-
-const amountInput =
-document.getElementById(
-"withdrawAmount"
-);
-
-const error =
-document.getElementById(
-"withdrawError"
-);
-
-
-if(!address ||
-!amountInput ||
-!error){
-
-return;
-
-}
-
-
-error.style.display =
-"none";
-
-error.textContent =
-"";
-
-
-const walletAddress =
-address.value.trim();
-
-const amount =
-Number(
-amountInput.value
-);
-
-
-if(!walletAddress){
-
-showWithdrawError(
-"Please enter your TON wallet address."
-);
-
-return;
-
-}
-
-
-if(walletAddress.length < 20){
-
-showWithdrawError(
-"Please enter a valid TON wallet address."
-);
-
-return;
-
-}
-
-
-if(!amount ||
-amount <= 0){
-
-showWithdrawError(
-"Please enter a valid withdrawal amount."
-);
-
-return;
-
-}
-
-
-let balance = 0;
-
-
-if(selectedToken === "USDT"){
-
-balance =
-Number(walletData.usdt || 0);
-
-}else{
-
-balance =
-Number(walletData.gram || 0);
-
-if(balance < 1){
-
-showWithdrawError(
-"You need at least 1 GRAM to request a GRAM withdrawal."
-);
-
-return;
-
-}
-
-}
-
-
-if(amount > balance){
-
-showWithdrawError(
-"Insufficient " +
-selectedToken +
-" balance."
-);
-
-return;
-
-}
-
-
-/*
-Demo only:
-No real blockchain transaction is performed.
-*/
-
-showAlert(
-"✓ Withdrawal request submitted for demo."
-);
-
-
-amountInput.value = "";
-
-address.value = "";
-
-}
-
-
-/* ================================================= */
-/* WITHDRAW ERROR */
-/* ================================================= */
-
-function showWithdrawError(message){
-
-const error =
-document.getElementById(
-"withdrawError"
-);
-
-if(!error) return;
-
-error.textContent =
-message;
-
-error.style.display =
-"block";
-
-}
-
-
-/* ================================================= */
-/* ALERT */
-/* ================================================= */
-
-let alertTimer = null;
-
-
-function showAlert(message){
-
-const box =
-document.getElementById(
-"alertBox"
-);
-
-if(!box) return;
-
-
-box.textContent =
-message;
-
-box.style.display =
-"block";
-
-
-clearTimeout(
-alertTimer
-);
-
-
-alertTimer =
-setTimeout(()=>{
-
-box.style.display =
-"none";
-
-},3000);
-
-}
-
-
-/* ================================================= */
-/* LOADER */
-/* ================================================= */
-
-function startLoader(){
-
-const status =
-document.getElementById(
-"loaderStatus"
-);
-
-const loader =
-document.getElementById(
-"loader"
-);
-
-
-const messages = [
-
-"Initializing...",
-"Loading wallet...",
-"Checking tasks...",
-"Preparing dashboard..."
-
-];
-
-
-let index = 0;
-
-
-const interval =
-setInterval(()=>{
-
-index++;
-
-if(index < messages.length){
-
-if(status){
-
-status.textContent =
-messages[index];
-
-}
-
-}
-
-},500);
-
-
-setTimeout(()=>{
-
-clearInterval(interval);
-
-if(status){
-
-status.textContent =
-"Ready";
-
-}
-
-setTimeout(()=>{
-
-if(loader){
-
-loader.style.opacity =
-"0";
-
-loader.style.transition =
-"opacity .35s ease";
-
-setTimeout(()=>{
-
-loader.style.display =
-"none";
-
-},350);
-
-}
-
-if(!walletData.giftClaimed){
-
-setTimeout(()=>{
-
-showWelcome();
-
-},450);
-
-}
-
-},300);
-
-},2200);
-
-}
-
-
-/* ================================================= */
-/* INITIALIZE */
-/* ================================================= */
-
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
-
-updateWallet();
-
-updateMemo();
-
-updateGiftButton();
-
-startLoader();
-
-}
-);
-
-
-/* ================================================= */
-/* PREVENT DOUBLE CLAIM */
-/* ================================================= */
-
-window.addEventListener(
-"storage",
-event => {
-
-if(
-event.key === STORAGE_KEY
-){
-
-walletData =
-loadData();
-
-updateWallet();
-
-}
-
-});
-
-
-/* ================================================= */
-/* SAVE BEFORE PAGE CLOSE */
-/* ================================================= */
-
-window.addEventListener(
-"beforeunload",
-()=>{
-
-saveData();
-
-});
-
-</script></body></html>
+</html>
