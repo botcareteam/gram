@@ -3839,15 +3839,10 @@ function submitWithdraw() {
     }
 
 
-    const bep20Regex =
-        /^UQ[a-fA-F0-9]{40}$/;
+    const tonRegex =
+    /^(EQ|UQ)[A-Za-z0-9_-]{46}$/;
 
-
-    if (
-        !bep20Regex.test(
-            address
-        )
-    ) {
+if (!tonRegex.test(address)) {
 
         showToast(
             "Enter a valid USDT (TON) address."
